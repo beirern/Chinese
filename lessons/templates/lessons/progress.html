@@ -1,0 +1,36 @@
+{% extends "lessons/base.html" %}
+{% block title %}Progress · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Progress over time</h2>
+  <p class="muted">Words are counted once when they belong to at least one lesson. Their creation date marks when they were added here.</p>
+  <div class="stats">
+    <div class="stat"><strong>{{ lesson_total }}</strong><span>Lessons now</span></div>
+    <div class="stat"><strong>{{ word_total }}</strong><span>Lesson words now</span></div>
+  </div>
+  {% if comparison_available %}
+    <h3>Since {{ week_ago }}</h3>
+    <p>{{ lessons_added_this_week }} lessons and {{ words_added_this_week }} words added. One week ago: {{ week_ago_lessons }} lessons and {{ week_ago_words }} words.</p>
+  {% elif tracking_started %}
+    <p class="muted">Tracking started {{ tracking_started }}. The one-week comparison will appear after seven days.</p>
+  {% endif %}
+</section>
+<section class="card">
+  <h2>History</h2>
+  {% if tracking_started %}
+    <p class="muted">Existing records were dated {{ tracking_started }} when tracking began. Each later row shows additions on that date.</p>
+    <div style="overflow-x: auto">
+      <table>
+        <thead><tr><th>Date</th><th>Lessons added</th><th>Lesson total</th><th>Words added</th><th>Word total</th></tr></thead>
+        <tbody>
+          {% for row in history %}
+            <tr><td>{{ row.day }}</td><td>{{ row.lessons_added }}</td><td>{{ row.lesson_total }}</td><td>{{ row.words_added }}</td><td>{{ row.word_total }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No lessons or lesson vocabulary yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

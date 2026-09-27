@@ -1,0 +1,14 @@
+{% extends "lessons/base.html" %}
+{% block title %}Add a source · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Add a source</h2>
+  <p class="muted">A source is the original material behind one or more lessons: a textbook today, or a particular video later.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ source_form.non_field_errors }}
+    {% for field in source_form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<p class="muted">{{ field.help_text }}</p>{% endif %}{{ field.errors }}</div>{% endfor %}
+    <button type="submit">Save source</button>
+  </form>
+</section>
+{% endblock %}

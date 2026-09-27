@@ -1,0 +1,35 @@
+{% extends "lessons/base.html" %}
+{% block title %}Lessons · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Lessons</h2>
+  {% if sources %}
+    {% for source in sources %}
+      <section class="card">
+        <h3>{{ source.name }}</h3>
+        <p class="muted">{{ source.get_kind_display }}{% if source.url %} · <a href="{{ source.url }}">Original material</a>{% endif %}</p>
+        {% for lesson in source.lessons.all %}
+          <article>
+            <h4>{{ lesson.title }}</h4>
+            <p>{{ lesson.description }}</p>
+            {% if lesson.vocabulary.all %}
+              <h5>Words</h5>
+              <ul>
+                {% for word in lesson.vocabulary.all %}
+                  <li><strong>{{ word.traditional }}</strong> · {{ word.simplified }} · {{ word.pinyin }} · {{ word.english }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </article>
+        {% empty %}
+          <p class="muted">No lessons from this source yet.</p>
+        {% endfor %}
+      </section>
+    {% endfor %}
+  {% else %}
+    <p class="muted">No sources yet. Add your textbook, then create its first lesson.</p>
+  {% endif %}
+  <a href="{% url 'source-create' %}"><button type="button" class="secondary">Add a source</button></a>
+  <a href="{% url 'lesson-create' %}"><button type="button">Add a lesson</button></a>
+</section>
+{% endblock %}

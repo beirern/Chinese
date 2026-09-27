@@ -1,0 +1,19 @@
+{% extends "lessons/base.html" %}
+{% block title %}Home · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>My stats</h2>
+  <p class="muted">For now, every lesson and its vocabulary count as learned.</p>
+  <div class="stats">
+    <a class="stat" href="{% url 'lesson-list' %}"><strong>{{ lesson_count }}</strong><span>Lessons</span></a>
+    <a class="stat" href="{% url 'word-list' %}"><strong>{{ word_count }}</strong><span>Words I know</span></a>
+  </div>
+  <p><a href="{% url 'progress' %}">See progress over time</a></p>
+</section>
+<section class="card">
+  <h2>Keep learning</h2>
+  <p>Review the vocabulary collected from your lessons or add another lesson.</p>
+  <a href="{% url 'lesson-list' %}"><button type="button" class="secondary">View lessons</button></a>
+  <a href="{% url 'lesson-create' %}"><button type="button">Add a lesson</button></a>
+</section>
+{% endblock %}

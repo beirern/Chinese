@@ -1,0 +1,60 @@
+{% extends "lessons/base.html" %}
+{% block title %}Words · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Words I know</h2>
+  <form method="get" action="{% url 'word-list' %}" id="word-filter">
+    <fieldset>
+      <legend>Choose words</legend>
+      <label><input type="radio" name="scope" value="all" {% if scope == "all" %}checked{% endif %} style="width:auto"> All words</label>
+      <label><input type="radio" name="scope" value="source" {% if scope == "source" %}checked{% endif %} style="width:auto"> One source</label>
+      <div id="source-choice">
+        <label for="source">Source</label>
+        <select id="source" name="source">
+          <option value="">Choose a source</option>
+          {% for source in sources %}
+            <option value="{{ source.id }}" {% if selected_source == source.id|stringformat:"s" %}selected{% endif %}>{{ source.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <label><input type="radio" name="scope" value="lessons" {% if scope == "lessons" %}checked{% endif %} style="width:auto"> Specific lessons (you can choose across sources)</label>
+      <div id="lesson-choices">
+        {% for source in sources %}
+          {% if source.lessons.all %}
+            <fieldset>
+              <legend>{{ source.name }}</legend>
+              {% for lesson in source.lessons.all %}
+                <label><input type="checkbox" name="lesson" value="{{ lesson.id }}" {% if lesson.id|stringformat:"s" in selected_lessons %}checked{% endif %} style="width:auto"> {{ lesson.title }}</label>
+              {% empty %}<span class="muted">No lessons</span>{% endfor %}
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <button type="submit">Apply filter</button>
+      <button type="submit" formaction="{% url 'word-export' %}">Export for Anki (CSV)</button>
+    </fieldset>
+  </form>
+  <p class="muted">{{ words|length }} words · CSV has no header row and keeps pinyin tone marks.</p>
+  {% if words %}
+    <ul>
+      {% for word in words %}
+        <li><strong>{{ word.traditional }}</strong>{% if word.simplified != word.traditional %}（{{ word.simplified }}）{% endif %} · {{ word.pinyin }} · {{ word.english }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No words match this selection.</p>
+  {% endif %}
+</section>
+<script>
+  const scopeInputs = document.querySelectorAll('input[name="scope"]');
+  const sourceChoice = document.getElementById('source-choice');
+  const lessonChoices = document.getElementById('lesson-choices');
+  function updateFilterOptions() {
+    const scope = document.querySelector('input[name="scope"]:checked').value;
+    sourceChoice.hidden = scope !== 'source';
+    lessonChoices.hidden = scope !== 'lessons';
+  }
+  scopeInputs.forEach(input => input.addEventListener('change', updateFilterOptions));
+  updateFilterOptions();
+</script>
+{% endblock %}
