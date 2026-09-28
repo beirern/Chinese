@@ -2,7 +2,15 @@
 {% block title %}Words · Chinese Lessons{% endblock %}
 {% block content %}
 <section class="card">
-  <h2>Words I know</h2>
+  <h2>Lesson words</h2>
+  <p class="muted">Anki progress is read from the desktop app when you refresh it here.</p>
+  <form method="post" action="{% url 'word-sync-anki' %}">
+    {% csrf_token %}
+    <input type="hidden" name="scope" value="{{ scope }}">
+    <input type="hidden" name="source" value="{{ selected_source }}">
+    {% for lesson_id in selected_lessons %}<input type="hidden" name="lesson" value="{{ lesson_id }}">{% endfor %}
+    <button type="submit">Refresh Anki progress</button>
+  </form>
   <form method="get" action="{% url 'word-list' %}" id="word-filter">
     <fieldset>
       <legend>Choose words</legend>
@@ -36,9 +44,19 @@
   </form>
   <p class="muted">{{ words|length }} words · CSV has no header row and keeps pinyin tone marks.</p>
   {% if words %}
-    <ul>
+    <ul class="word-list">
       {% for word in words %}
-        <li><strong>{{ word.traditional }}</strong>{% if word.simplified != word.traditional %}（{{ word.simplified }}）{% endif %} · {{ word.pinyin }} · {{ word.english }}</li>
+        <li>
+          <strong>{{ word.traditional }}</strong>{% if word.simplified != word.traditional %}（{{ word.simplified }}）{% endif %} · {{ word.pinyin }} · {{ word.english }}<br>
+          {% with progress=word.anki_progress %}
+            {% if progress %}
+              <span class="muted"><strong>{{ progress.get_state_display }}</strong> · Answered {{ progress.answer_count }} times · Again {{ progress.again_count }}{% if progress.interval_days %} · Current interval {{ progress.interval_days }} day{{ progress.interval_days|pluralize }}{% endif %}{% if progress.last_reviewed_at %} · Last reviewed {{ progress.last_reviewed_at|date:"M j, Y" }}{% endif %}</span>
+              <details><summary>Answer breakdown</summary>Again {{ progress.again_count }} · Hard {{ progress.hard_count }} · Good {{ progress.good_count }} · Easy {{ progress.easy_count }} · Refreshed {{ progress.synced_at|date:"M j, Y g:i A" }}</details>
+            {% else %}
+              <span class="muted">Not in Anki</span>
+            {% endif %}
+          {% endwith %}
+        </li>
       {% endfor %}
     </ul>
   {% else %}

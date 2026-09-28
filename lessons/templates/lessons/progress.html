@@ -16,6 +16,27 @@
   {% endif %}
 </section>
 <section class="card">
+  <h2>Current Anki status</h2>
+  {% if anki_status_chart %}
+    <p class="muted">Latest synced status of lesson words · refreshed {{ anki_status_chart.last_synced|date:"M j, Y g:i A" }}</p>
+    <div class="status-bar" aria-hidden="true">
+      {% for segment in anki_status_chart.segments %}
+        {% if segment.count %}<span class="status-segment status-{{ segment.key }}" style="width: {{ segment.percent }}%"></span>{% endif %}
+      {% endfor %}
+    </div>
+    <ul class="status-legend">
+      {% for segment in anki_status_chart.segments %}
+        <li><span class="status-swatch status-{{ segment.key }}" aria-hidden="true"></span>{{ segment.label }}: {{ segment.count }}</li>
+      {% endfor %}
+    </ul>
+    <p class="muted">These are Anki card states, not a count of words you definitely know. <a href="{% url 'word-list' %}">See words or refresh Anki progress</a>.</p>
+  {% elif word_total %}
+    <p>No Anki progress has been synced yet. <a href="{% url 'word-list' %}">Refresh it from the Words page</a>.</p>
+  {% else %}
+    <p>Add lesson words to see their Anki status here.</p>
+  {% endif %}
+</section>
+<section class="card">
   <h2>History</h2>
   {% if tracking_started %}
     <p class="muted">Existing records were dated {{ tracking_started }} when tracking began. Each later row shows additions on that date.</p>

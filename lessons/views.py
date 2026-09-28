@@ -1,18 +1,22 @@
 import csv
 import io
 from datetime import timedelta
+from urllib.parse import urlencode
 
 from django import forms
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Max
 from django.db.models.functions import TruncDate
 from django.http import HttpResponse
 from django.db import transaction
 from django.forms import formset_factory
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 
-from .models import Lesson, Source, Word
+from .anki_sync import AnkiSyncError, sync_anki_progress
+from .models import AnkiProgress, Lesson, Source, Word
 
 
 class LessonForm(forms.ModelForm):
@@ -94,6 +98,7 @@ def progress(request):
 
     return render(request, "lessons/progress.html", {
         "history": reversed(history),
+        "anki_status_chart": anki_status_chart(word_total),
         "lesson_total": lesson_total,
         "word_total": word_total,
         "tracking_started": history[0]["day"] if history else None,
@@ -106,11 +111,47 @@ def progress(request):
     })
 
 
+def anki_status_chart(word_total):
+    if not word_total:
+        return None
+
+    rows = list(
+        Word.objects.filter(lessons__isnull=False)
+        .values("anki_progress__state")
+        .annotate(count=Count("id", distinct=True), last_sync=Max("anki_progress__synced_at"))
+    )
+    last_synced = max((row["last_sync"] for row in rows if row["last_sync"]), default=None)
+    if last_synced is None:
+        return None
+
+    counts = {row["anki_progress__state"]: row["count"] for row in rows}
+    categories = [
+        (AnkiProgress.State.NEW, "New"),
+        (AnkiProgress.State.LEARNING, "Learning"),
+        (AnkiProgress.State.REVIEWING, "Reviewing"),
+        (AnkiProgress.State.RELEARNING, "Relearning"),
+        (AnkiProgress.State.SUSPENDED, "Suspended"),
+        (None, "No Anki match"),
+    ]
+    return {
+        "last_synced": last_synced,
+        "segments": [
+            {
+                "key": state or "unmatched",
+                "label": label,
+                "count": counts.get(state, 0),
+                "percent": round(counts.get(state, 0) / word_total * 100, 2),
+            }
+            for state, label in categories
+        ],
+    }
+
+
 def word_list(request):
     scope = request.GET.get("scope", "all")
     source_id = request.GET.get("source", "")
     lesson_ids = request.GET.getlist("lesson")
-    words = words_for_filter(scope, source_id, lesson_ids)
+    words = words_for_filter(scope, source_id, lesson_ids).select_related("anki_progress")
     sources = Source.objects.prefetch_related("lessons")
     return render(request, "lessons/word_list.html", {
         "words": words,
@@ -119,6 +160,27 @@ def word_list(request):
         "selected_source": source_id,
         "selected_lessons": lesson_ids,
     })
+
+
+@require_POST
+def word_sync_anki(request):
+    try:
+        result = sync_anki_progress()
+    except AnkiSyncError as error:
+        messages.error(request, str(error))
+    else:
+        message = f'Refreshed Anki progress for {result["matched"]} words.'
+        if result["unmatched"]:
+            message += f' {result["unmatched"]} words could not be matched.'
+        if result["ambiguous"]:
+            message += f' {result["ambiguous"]} ambiguous matches were skipped.'
+        messages.success(request, message)
+    query = urlencode({
+        "scope": request.POST.get("scope", "all"),
+        "source": request.POST.get("source", ""),
+        "lesson": request.POST.getlist("lesson"),
+    }, doseq=True)
+    return redirect(f"{reverse('word-list')}?{query}")
 
 
 def words_for_filter(scope, source_id, lesson_ids):

@@ -24,6 +24,7 @@ urlpatterns = [
     path('progress/', lesson_views.progress, name='progress'),
     path('lessons/', lesson_views.lesson_list, name='lesson-list'),
     path('words/', lesson_views.word_list, name='word-list'),
+    path('words/sync-anki/', lesson_views.word_sync_anki, name='word-sync-anki'),
     path('words/export.csv', lesson_views.word_export, name='word-export'),
     path('sources/new/', lesson_views.source_create, name='source-create'),
     path('lessons/new/', lesson_views.lesson_create, name='lesson-create'),

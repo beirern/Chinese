@@ -21,6 +21,33 @@ class Word(models.Model):
         return f"{self.traditional} ({self.pinyin})"
 
 
+class AnkiProgress(models.Model):
+    class State(models.TextChoices):
+        NEW = "new", "New"
+        LEARNING = "learning", "Learning"
+        REVIEWING = "reviewing", "Reviewing"
+        RELEARNING = "relearning", "Relearning"
+        SUSPENDED = "suspended", "Suspended"
+
+    word = models.OneToOneField(Word, on_delete=models.CASCADE, related_name="anki_progress")
+    card_id = models.BigIntegerField(unique=True)
+    state = models.CharField(max_length=20, choices=State.choices)
+    interval_days = models.PositiveIntegerField(default=0)
+    again_count = models.PositiveIntegerField(default=0)
+    hard_count = models.PositiveIntegerField(default=0)
+    good_count = models.PositiveIntegerField(default=0)
+    easy_count = models.PositiveIntegerField(default=0)
+    last_reviewed_at = models.DateTimeField(null=True, blank=True)
+    synced_at = models.DateTimeField()
+
+    @property
+    def answer_count(self):
+        return self.again_count + self.hard_count + self.good_count + self.easy_count
+
+    def __str__(self):
+        return f"{self.word}: {self.get_state_display()}"
+
+
 class Source(models.Model):
     class Kind(models.TextChoices):
         TEXTBOOK = "textbook", "Textbook"
