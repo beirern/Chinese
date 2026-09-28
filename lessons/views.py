@@ -1,5 +1,6 @@
 import csv
 import io
+import math
 from datetime import timedelta
 from urllib.parse import urlencode
 
@@ -98,6 +99,7 @@ def progress(request):
 
     return render(request, "lessons/progress.html", {
         "history": reversed(history),
+        "chart": progress_chart(history),
         "anki_status_chart": anki_status_chart(word_total),
         "lesson_total": lesson_total,
         "word_total": word_total,
@@ -143,6 +145,70 @@ def anki_status_chart(word_total):
                 "percent": round(counts.get(state, 0) / word_total * 100, 2),
             }
             for state, label in categories
+        ],
+    }
+
+
+def progress_chart(history):
+    if not history:
+        return None
+
+    today = timezone.localdate()
+    first_day = history[0]["day"]
+    last_day = max(today, history[-1]["day"])
+    days = (last_day - first_day).days
+    plot_left, plot_right = 55, 740
+    plot_top, plot_bottom = 30, 290
+
+    def tick_step(total):
+        magnitude = 10 ** max(0, math.floor(math.log10(max(total / 4, 0.25))))
+        return math.ceil(total / 4 / magnitude) * magnitude or 1
+
+    lesson_step = tick_step(history[-1]["lesson_total"])
+    word_step = tick_step(history[-1]["word_total"])
+    lesson_max = lesson_step * 4
+    word_max = word_step * 4
+
+    def x_for(day):
+        if days == 0:
+            return (plot_left + plot_right) / 2
+        return plot_left + (day - first_day).days / days * (plot_right - plot_left)
+
+    def y_for(value, maximum):
+        return plot_bottom - value / maximum * (plot_bottom - plot_top)
+
+    chart_days = list(history)
+    if chart_days[-1]["day"] < last_day:
+        chart_days.append({**chart_days[-1], "day": last_day})
+
+    def series(total_key, maximum):
+        points = [
+            {
+                "x": round(x_for(row["day"]), 1),
+                "y": round(y_for(row[total_key], maximum), 1),
+                "day": row["day"],
+                "total": row[total_key],
+            }
+            for row in chart_days
+        ]
+        path = f'M {points[0]["x"]} {points[0]["y"]}'
+        for point in points[1:]:
+            path += f' H {point["x"]} V {point["y"]}'
+        return {"path": path, "points": points}
+
+    return {
+        "start_day": first_day,
+        "end_day": last_day,
+        "single_day": days == 0,
+        "lessons": series("lesson_total", lesson_max),
+        "words": series("word_total", word_max),
+        "ticks": [
+            {
+                "y": round(plot_bottom - i * (plot_bottom - plot_top) / 4, 1),
+                "lessons": i * lesson_step,
+                "words": i * word_step,
+            }
+            for i in range(5)
         ],
     }
 

@@ -36,6 +36,39 @@
     <p>Add lesson words to see their Anki status here.</p>
   {% endif %}
 </section>
+{% if chart %}
+<section class="card">
+  <h2>Lesson and word growth</h2>
+  <div class="chart-legend">
+    <span class="chart-legend-lessons">Lessons · left scale</span>
+    <span class="chart-legend-words">Words · right scale</span>
+  </div>
+  <svg class="progress-chart" viewBox="0 0 800 340" role="img" aria-labelledby="progress-chart-title progress-chart-description">
+    <title id="progress-chart-title">Lesson and word totals over time</title>
+    <desc id="progress-chart-description">Cumulative lesson totals use the left scale. Cumulative word totals use the right scale. The history table below gives the exact daily values.</desc>
+    {% for tick in chart.ticks %}
+      <line x1="55" x2="740" y1="{{ tick.y }}" y2="{{ tick.y }}" stroke="#deded8" />
+      <text x="47" y="{{ tick.y }}" dominant-baseline="middle" text-anchor="end" fill="#175b72">{{ tick.lessons }}</text>
+      <text x="748" y="{{ tick.y }}" dominant-baseline="middle" text-anchor="start" fill="#9a4e0a">{{ tick.words }}</text>
+    {% endfor %}
+    <path d="{{ chart.lessons.path }}" fill="none" stroke="#175b72" stroke-width="3" stroke-linejoin="round" />
+    <path d="{{ chart.words.path }}" fill="none" stroke="#9a4e0a" stroke-width="3" stroke-dasharray="8 5" stroke-linejoin="round" />
+    {% for point in chart.lessons.points %}
+      <circle cx="{{ point.x }}" cy="{{ point.y }}" r="5" fill="#175b72"><title>{{ point.day }}: {{ point.total }} lessons</title></circle>
+    {% endfor %}
+    {% for point in chart.words.points %}
+      <circle cx="{{ point.x }}" cy="{{ point.y }}" r="5" fill="#9a4e0a"><title>{{ point.day }}: {{ point.total }} words</title></circle>
+    {% endfor %}
+    {% if chart.single_day %}
+      <text x="397.5" y="320" text-anchor="middle">{{ chart.start_day }}</text>
+    {% else %}
+      <text x="55" y="320" text-anchor="start">{{ chart.start_day }}</text>
+      <text x="740" y="320" text-anchor="end">{{ chart.end_day }}</text>
+    {% endif %}
+  </svg>
+  {% if chart.single_day %}<p class="muted">This is the starting point. The lines will extend as you add lessons and words on later days.</p>{% endif %}
+</section>
+{% endif %}
 <section class="card">
   <h2>History</h2>
   {% if tracking_started %}
