@@ -27,7 +27,7 @@ jobs:
       - name: Check out report
         uses: actions/checkout@v6
       - name: Check generated files
-        run: test -s docs/index.html && test -s docs/public_report.css
+        run: test -s docs/index.html && test -s docs/public_report.css && test -s docs/public_report.js
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload report

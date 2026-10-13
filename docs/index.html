@@ -3,110 +3,1205 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A snapshot of my Mandarin learning through books, video, and lessons.">
-  <title>Mandarin learning journal · Progress report</title>
+  <meta name="description" content="A record of my Mandarin lessons and the words I’m studying.">
+  <title>My Chinese Journey</title>
   <link rel="stylesheet" href="./public_report.css">
+  <script defer src="./public_report.js"></script>
 </head>
-<body>
+<body class="atlas-page">
   <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">文</span><span>Mandarin learning journal</span></a>
-      <nav aria-label="Main navigation"><a href="#progress">Progress</a><a href="#sources">Sources</a><a href="#lessons" class="nav-highlight">Lessons</a></nav>
-    </div>
+    <div class="wrap topbar-inner"><a class="brand" href="#top">Mandarin / a learning atlas</a><a class="preview-link" href="#atlas-sources">Source material</a></div>
   </header>
+  <main id="top">
+    <section class="atlas-hero" aria-labelledby="report-title">
+      <div class="wrap atlas-hero-inner">
+        <div class="atlas-title"><h1 id="report-title">My Chinese<br>Journey</h1><span>From textbooks, books, and stories. Updated Oct 12, 2026.</span></div>
+        <div class="feature" aria-label="Featured lesson word">
 
-  <div id="top" class="hero">
-    <div class="wrap hero-inner">
-      <div>
-        <p class="eyebrow">A personal study report · Traditional Chinese</p>
-        <h1>Learning, one<br>lesson at a time.</h1>
-        <p class="lead">A snapshot of my Mandarin study through textbooks, books, videos, and stories. Each word here began with something I read, watched, or studied.</p>
-        <div class="hero-meta">
-          <span><span class="live-dot" aria-hidden="true"></span>Report updated October 12, 2026</span>
-          <span>Tracking since September 2026</span>
+            <span class="feature-word" lang="zh-Hant">歡迎</span>
+            <div class="feature-caption"><span>huānyíng</span><strong>Welcome!</strong></div>
+
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true"><div class="art-ring"></div><div class="art-glyph">學</div><div class="art-caption">xué · to learn</div></div>
+    </section>
+    <div class="wrap">
+      <div class="atlas-counts" aria-label="Study totals">
+        <div><strong>189</strong><span>words</span></div>
+        <div><strong>8</strong><span>lessons</span></div>
+        <div><strong>40</strong><span>cards reviewing</span></div>
+      </div>
+      <section class="atlas-vocabulary" aria-labelledby="atlas-vocabulary-title">
+        <div class="atlas-section-head"><h2 id="atlas-vocabulary-title">All words I’m studying</h2></div>
+        <div class="word-controls">
+          <label class="search-label">Find a word<input id="word-search" type="search" placeholder="Search characters, pinyin, English, or lesson" autocomplete="off"></label>
+          <label>Source<select id="source-filter"><option value="">All sources</option><option value="3">Bird and Kip</option><option value="1">Let&#x27;s Learn Mandarin, Taiwanese Class</option><option value="2">My First Book of Chinese Words</option></select></label>
+          <label>Anki state<select id="state-filter"><option value="">All states</option><option value="new">New</option><option value="learning">Learning</option><option value="reviewing">Reviewing</option><option value="relearning">Relearning</option><option value="suspended">Suspended</option><option value="unmatched">No Anki match</option></select></label>
+        </div>
+        <p id="shown-count" class="result-count" aria-live="polite"></p>
+        <ul id="word-list" class="word-list">
+
+            <li class="word-row" data-search="一 一 yī one I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">一</strong><span class="word-pinyin">yī</span></div>
+              <div class="word-definition"><span>one</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="上午 上午 shàngwǔ later morning What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">上午</strong><span class="word-pinyin">shàngwǔ</span></div>
+              <div class="word-definition"><span>later morning</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="下午 下午 xiàwǔ afternoon What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">下午</strong><span class="word-pinyin">xiàwǔ</span></div>
+              <div class="word-definition"><span>afternoon</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="不 不 bù no, not She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">不</strong><span class="word-pinyin">bù</span></div>
+              <div class="word-definition"><span>no, not</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="中午 中午 zhōngwǔ noon What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">中午</strong><span class="word-pinyin">zhōngwǔ</span></div>
+              <div class="word-definition"><span>noon</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="也 也 yě also I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">也</strong><span class="word-pinyin">yě</span></div>
+              <div class="word-definition"><span>also</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="人 人 rén people, person Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">人</strong><span class="word-pinyin">rén</span></div>
+              <div class="word-definition"><span>people, person</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="什麼 什么 shénme what Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">什麼</strong><span class="word-pinyin">shénme</span></div>
+              <div class="word-definition"><span>what</span><span class="word-simplified">Simplified: <span lang="zh-Hans">什么</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="什麼都沒看到 什么都没看到 shénme dōu méi kàndào didn&#x27;t see anything Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">什麼都沒看到</strong><span class="word-pinyin">shénme dōu méi kàndào</span></div>
+              <div class="word-definition"><span>didn&#x27;t see anything</span><span class="word-simplified">Simplified: <span lang="zh-Hans">什么都没看到</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="今天 今天 jīntīan today My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">今天</strong><span class="word-pinyin">jīntīan</span></div>
+              <div class="word-definition"><span>today</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="他 他 tā Him Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">他</strong><span class="word-pinyin">tā</span></div>
+              <div class="word-definition"><span>Him</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="他們 他们 tāmen they She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">他們</strong><span class="word-pinyin">tāmen</span></div>
+              <div class="word-definition"><span>they</span><span class="word-simplified">Simplified: <span lang="zh-Hans">他们</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="但 但 dàn but Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">但</strong><span class="word-pinyin">dàn</span></div>
+              <div class="word-definition"><span>but</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="住在 住在 zhù zài to live in / at Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">住在</strong><span class="word-pinyin">zhù zài</span></div>
+              <div class="word-definition"><span>to live in / at</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="你 你 nǐ you (male) I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">你</strong><span class="word-pinyin">nǐ</span></div>
+              <div class="word-definition"><span>you (male)</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="來 来 lái to come Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">來</strong><span class="word-pinyin">lái</span></div>
+              <div class="word-definition"><span>to come</span><span class="word-simplified">Simplified: <span lang="zh-Hans">来</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="個 个 ge generic measure word I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">個</strong><span class="word-pinyin">ge</span></div>
+              <div class="word-definition"><span>generic measure word</span><span class="word-simplified">Simplified: <span lang="zh-Hans">个</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="做 做 zuò to do What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">做</strong><span class="word-pinyin">zuò</span></div>
+              <div class="word-definition"><span>to do</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="兄弟姊妹 兄弟姐妹 xiōngdì jiěmèi siblings I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">兄弟姊妹</strong><span class="word-pinyin">xiōngdì jiěmèi</span></div>
+              <div class="word-definition"><span>siblings</span><span class="word-simplified">Simplified: <span lang="zh-Hans">兄弟姐妹</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="先生 先生 xīanshēng husband, Mr. She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">先生</strong><span class="word-pinyin">xīanshēng</span></div>
+              <div class="word-definition"><span>husband, Mr.</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="兒子 儿子 érzi son She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">兒子</strong><span class="word-pinyin">érzi</span></div>
+              <div class="word-definition"><span>son</span><span class="word-simplified">Simplified: <span lang="zh-Hans">儿子</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="兩 两 liǎng two I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">兩</strong><span class="word-pinyin">liǎng</span></div>
+              <div class="word-definition"><span>two</span><span class="word-simplified">Simplified: <span lang="zh-Hans">两</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="公司 公司 gōngsī company She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">公司</strong><span class="word-pinyin">gōngsī</span></div>
+              <div class="word-definition"><span>company</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="公園 公园 gōngyuán park Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">公園</strong><span class="word-pinyin">gōngyuán</span></div>
+              <div class="word-definition"><span>park</span><span class="word-simplified">Simplified: <span lang="zh-Hans">公园</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="再見 再见 zàijiàn goodbye My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">再見</strong><span class="word-pinyin">zàijiàn</span></div>
+              <div class="word-definition"><span>goodbye</span><span class="word-simplified">Simplified: <span lang="zh-Hans">再见</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="冰 冰 bīng ice My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">冰</strong><span class="word-pinyin">bīng</span></div>
+              <div class="word-definition"><span>ice</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="冰淇淋 冰淇淋 bīngqílín ice cream What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">冰淇淋</strong><span class="word-pinyin">bīngqílín</span></div>
+              <div class="word-definition"><span>ice cream</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="加州 加州 Jiāzhōu California Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">加州</strong><span class="word-pinyin">Jiāzhōu</span></div>
+              <div class="word-definition"><span>California</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="包子 包子 bāozi steamed buns My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">包子</strong><span class="word-pinyin">bāozi</span></div>
+              <div class="word-definition"><span>steamed buns</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="去 去 qù to go Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">去</strong><span class="word-pinyin">qù</span></div>
+              <div class="word-definition"><span>to go</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="只 只 zhǐ only I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">只</strong><span class="word-pinyin">zhǐ</span></div>
+              <div class="word-definition"><span>only</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="叫 叫 jiào To be called Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">叫</strong><span class="word-pinyin">jiào</span></div>
+              <div class="word-definition"><span>To be called</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="叫道 叫道 jiàodào called out Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">叫道</strong><span class="word-pinyin">jiàodào</span></div>
+              <div class="word-definition"><span>called out</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="可是 可是 kěshì but, however What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">可是</strong><span class="word-pinyin">kěshì</span></div>
+              <div class="word-definition"><span>but, however</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="名字 名字 míngzi name Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">名字</strong><span class="word-pinyin">míngzi</span></div>
+              <div class="word-definition"><span>name</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="呀 呀 ya expressive tone Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">呀</strong><span class="word-pinyin">ya</span></div>
+              <div class="word-definition"><span>expressive tone</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="和 和 hàn/hé and She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">和</strong><span class="word-pinyin">hàn/hé</span></div>
+              <div class="word-definition"><span>and</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="咖啡 咖啡 kāfēi coffee What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">咖啡</strong><span class="word-pinyin">kāfēi</span></div>
+              <div class="word-definition"><span>coffee</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="咚 咚 dōng thud (sound) Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">咚</strong><span class="word-pinyin">dōng</span></div>
+              <div class="word-definition"><span>thud (sound)</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="哎呦 哎呦 āiyōu ouch Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">哎呦</strong><span class="word-pinyin">āiyōu</span></div>
+              <div class="word-definition"><span>ouch</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="哐 哐 kuāng clang (sound) Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">哐</strong><span class="word-pinyin">kuāng</span></div>
+              <div class="word-definition"><span>clang (sound)</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="哥哥 哥哥 gēge older brother I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">哥哥</strong><span class="word-pinyin">gēge</span></div>
+              <div class="word-definition"><span>older brother</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="哦 哦 ó oh Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">哦</strong><span class="word-pinyin">ó</span></div>
+              <div class="word-definition"><span>oh</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="哪國人？ 哪国人？ nǎ guó rén Where are you from? Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">哪國人？</strong><span class="word-pinyin">nǎ guó rén</span></div>
+              <div class="word-definition"><span>Where are you from?</span><span class="word-simplified">Simplified: <span lang="zh-Hans">哪国人？</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="哪裡/哪兒 哪里/哪儿 nǎlǐ (nǎr) where She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">哪裡/哪兒</strong><span class="word-pinyin">nǎlǐ (nǎr)</span></div>
+              <div class="word-definition"><span>where</span><span class="word-simplified">Simplified: <span lang="zh-Hans">哪里/哪儿</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="唱歌 唱歌 chàng gē to sing What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">唱歌</strong><span class="word-pinyin">chàng gē</span></div>
+              <div class="word-definition"><span>to sing</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="喜歡 喜欢 xǐhuān to like My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">喜歡</strong><span class="word-pinyin">xǐhuān</span></div>
+              <div class="word-definition"><span>to like</span><span class="word-simplified">Simplified: <span lang="zh-Hans">喜欢</span></span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="嗎 吗 ma question particle I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">嗎</strong><span class="word-pinyin">ma</span></div>
+              <div class="word-definition"><span>question particle</span><span class="word-simplified">Simplified: <span lang="zh-Hans">吗</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="國家 国家 guójiā nation, country Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">國家</strong><span class="word-pinyin">guójiā</span></div>
+              <div class="word-definition"><span>nation, country</span><span class="word-simplified">Simplified: <span lang="zh-Hans">国家</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="在 在 zài in, on, at She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">在</strong><span class="word-pinyin">zài</span></div>
+              <div class="word-definition"><span>in, on, at</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="基普 基普 Jīpǔ Kip (name) Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">基普</strong><span class="word-pinyin">Jīpǔ</span></div>
+              <div class="word-definition"><span>Kip (name)</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="塊 块 kuài measure word for piece, chunk, or block-shaped item What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">塊</strong><span class="word-pinyin">kuài</span></div>
+              <div class="word-definition"><span>measure word for piece, chunk, or block-shaped item</span><span class="word-simplified">Simplified: <span lang="zh-Hans">块</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="大學 大学 dàxué university, college She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">大學</strong><span class="word-pinyin">dàxué</span></div>
+              <div class="word-definition"><span>university, college</span><span class="word-simplified">Simplified: <span lang="zh-Hans">大学</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="大海 大海 dàhǎi ocean Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">大海</strong><span class="word-pinyin">dàhǎi</span></div>
+              <div class="word-definition"><span>ocean</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="太太 太太 tàitai wife, Mrs. What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">太太</strong><span class="word-pinyin">tàitai</span></div>
+              <div class="word-definition"><span>wife, Mrs.</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="女兒 女儿 nü&#x27;ér daughter She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">女兒</strong><span class="word-pinyin">nü&#x27;ér</span></div>
+              <div class="word-definition"><span>daughter</span><span class="word-simplified">Simplified: <span lang="zh-Hans">女儿</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="奶奶 奶奶 nǎinai paternal grandmother My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">奶奶</strong><span class="word-pinyin">nǎinai</span></div>
+              <div class="word-definition"><span>paternal grandmother</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="她 她 tā her Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">她</strong><span class="word-pinyin">tā</span></div>
+              <div class="word-definition"><span>her</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="好 好 hǎo good, fine Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">好</strong><span class="word-pinyin">hǎo</span></div>
+              <div class="word-definition"><span>good, fine</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="好久不見 好久不见 hǎojiǔ bújiàn long time no see Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">好久不見</strong><span class="word-pinyin">hǎojiǔ bújiàn</span></div>
+              <div class="word-definition"><span>long time no see</span><span class="word-simplified">Simplified: <span lang="zh-Hans">好久不见</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="妳 你 nǐ you (female) I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">妳</strong><span class="word-pinyin">nǐ</span></div>
+              <div class="word-definition"><span>you (female)</span><span class="word-simplified">Simplified: <span lang="zh-Hans">你</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="妹妹 妹妹 méimei younger sister I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="reviewing" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">妹妹</strong><span class="word-pinyin">méimei</span></div>
+              <div class="word-definition"><span>younger sister</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-reviewing">Reviewing</span></div>
+            </li>
+
+            <li class="word-row" data-search="姊姊/姐姐 姐姐 jiéjie older sister I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">姊姊/姐姐</strong><span class="word-pinyin">jiéjie</span></div>
+              <div class="word-definition"><span>older sister</span><span class="word-simplified">Simplified: <span lang="zh-Hans">姐姐</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="姓 姓 xìng to be surnamed Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">姓</strong><span class="word-pinyin">xìng</span></div>
+              <div class="word-definition"><span>to be surnamed</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="媽媽 妈妈 māma mother, mom My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">媽媽</strong><span class="word-pinyin">māma</span></div>
+              <div class="word-definition"><span>mother, mom</span><span class="word-simplified">Simplified: <span lang="zh-Hans">妈妈</span></span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="孩子 孩子 háizi child She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">孩子</strong><span class="word-pinyin">háizi</span></div>
+              <div class="word-definition"><span>child</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="學校 学校 xuéxiào school Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">學校</strong><span class="word-pinyin">xuéxiào</span></div>
+              <div class="word-definition"><span>school</span><span class="word-simplified">Simplified: <span lang="zh-Hans">学校</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="學生 学生 xuéshēng student She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">學生</strong><span class="word-pinyin">xuéshēng</span></div>
+              <div class="word-definition"><span>student</span><span class="word-simplified">Simplified: <span lang="zh-Hans">学生</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="安靜 安静 ānjìng quiet Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">安靜</strong><span class="word-pinyin">ānjìng</span></div>
+              <div class="word-definition"><span>quiet</span><span class="word-simplified">Simplified: <span lang="zh-Hans">安静</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="完美 完美 wánměi perfect Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">完美</strong><span class="word-pinyin">wánměi</span></div>
+              <div class="word-definition"><span>perfect</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="家 家 jiā home What Do You Usually Like to Do? My First Book of Chinese Words Let&#x27;s Learn Mandarin, Taiwanese Class My First Book of Chinese Words" data-state="new" data-sources="1 2">
+              <div class="word-form"><strong lang="zh-Hant">家</strong><span class="word-pinyin">jiā</span></div>
+              <div class="word-definition"><span>home</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?, My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="對不起 对不起 duìbuqǐ sorry Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">對不起</strong><span class="word-pinyin">duìbuqǐ</span></div>
+              <div class="word-definition"><span>sorry</span><span class="word-simplified">Simplified: <span lang="zh-Hans">对不起</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="小孩 小孩 xiǎohái child She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">小孩</strong><span class="word-pinyin">xiǎohái</span></div>
+              <div class="word-definition"><span>child</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="小孩子 小孩子 xiǎo háizi children, kids My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">小孩子</strong><span class="word-pinyin">xiǎo háizi</span></div>
+              <div class="word-definition"><span>children, kids</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="小學 小学 xiǎoxúe elementary school She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">小學</strong><span class="word-pinyin">xiǎoxúe</span></div>
+              <div class="word-definition"><span>elementary school</span><span class="word-simplified">Simplified: <span lang="zh-Hans">小学</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="小提琴 小提琴 xiǎotíqín violin My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">小提琴</strong><span class="word-pinyin">xiǎotíqín</span></div>
+              <div class="word-definition"><span>violin</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="尾巴 尾巴 wěibā tail My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">尾巴</strong><span class="word-pinyin">wěibā</span></div>
+              <div class="word-definition"><span>tail</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="工作 工作 gōngzuò to work, work She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">工作</strong><span class="word-pinyin">gōngzuò</span></div>
+              <div class="word-definition"><span>to work, work</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="巧克力 巧克力 qiǎokèlì chocolate What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">巧克力</strong><span class="word-pinyin">qiǎokèlì</span></div>
+              <div class="word-definition"><span>chocolate</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="常常 常常 chángcháng often What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">常常</strong><span class="word-pinyin">chángcháng</span></div>
+              <div class="word-definition"><span>often</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="平常 平常 píngcháng usually, normally Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">平常</strong><span class="word-pinyin">píngcháng</span></div>
+              <div class="word-definition"><span>usually, normally</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="弟弟 弟弟 dìdi younger brother I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">弟弟</strong><span class="word-pinyin">dìdi</span></div>
+              <div class="word-definition"><span>younger brother</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="往上 往上 wǎngshàng upwards Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">往上</strong><span class="word-pinyin">wǎngshàng</span></div>
+              <div class="word-definition"><span>upwards</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="很 很 hěn very My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">很</strong><span class="word-pinyin">hěn</span></div>
+              <div class="word-definition"><span>very</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="忙 忙 máng busy My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">忙</strong><span class="word-pinyin">máng</span></div>
+              <div class="word-definition"><span>busy</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="念書 念书 niàn shū to study She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">念書</strong><span class="word-pinyin">niàn shū</span></div>
+              <div class="word-definition"><span>to study</span><span class="word-simplified">Simplified: <span lang="zh-Hans">念书</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="您 您 nǐn you (formal) Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">您</strong><span class="word-pinyin">nǐn</span></div>
+              <div class="word-definition"><span>you (formal)</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="您呢？ 您呢？ nǐn ne? How about you? And you? Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">您呢？</strong><span class="word-pinyin">nǐn ne?</span></div>
+              <div class="word-definition"><span>How about you? And you?</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="想 想 xiǎng would like, to want, to have a desire to Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">想</strong><span class="word-pinyin">xiǎng</span></div>
+              <div class="word-definition"><span>would like, to want, to have a desire to</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="愛 爱 aì love My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">愛</strong><span class="word-pinyin">aì</span></div>
+              <div class="word-definition"><span>love</span><span class="word-simplified">Simplified: <span lang="zh-Hans">爱</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="我 我 wǒ I, me Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">我</strong><span class="word-pinyin">wǒ</span></div>
+              <div class="word-definition"><span>I, me</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="手 手 shǒu hand My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">手</strong><span class="word-pinyin">shǒu</span></div>
+              <div class="word-definition"><span>hand</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="打 打 dǎ to play (ball) What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">打</strong><span class="word-pinyin">dǎ</span></div>
+              <div class="word-definition"><span>to play (ball)</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="打籃球 打篮球 dǎ lánqiú play basketball What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">打籃球</strong><span class="word-pinyin">dǎ lánqiú</span></div>
+              <div class="word-definition"><span>play basketball</span><span class="word-simplified">Simplified: <span lang="zh-Hans">打篮球</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="搬家 搬家 bān jiā move to new house Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">搬家</strong><span class="word-pinyin">bān jiā</span></div>
+              <div class="word-definition"><span>move to new house</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="攀岩 攀岩 pānyán rock climbing What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">攀岩</strong><span class="word-pinyin">pānyán</span></div>
+              <div class="word-definition"><span>rock climbing</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="放假 放假 fàngjià to be on school break, to be on vacation Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">放假</strong><span class="word-pinyin">fàngjià</span></div>
+              <div class="word-definition"><span>to be on school break, to be on vacation</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="教書 教书 jiāo shū the job of teaching My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">教書</strong><span class="word-pinyin">jiāo shū</span></div>
+              <div class="word-definition"><span>the job of teaching</span><span class="word-simplified">Simplified: <span lang="zh-Hans">教书</span></span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="新 新 xīn new Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">新</strong><span class="word-pinyin">xīn</span></div>
+              <div class="word-definition"><span>new</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="日 日 rí day/sun My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">日</strong><span class="word-pinyin">rí</span></div>
+              <div class="word-definition"><span>day/sun</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="是 是 shì to be (am, is, are) Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">是</strong><span class="word-pinyin">shì</span></div>
+              <div class="word-definition"><span>to be (am, is, are)</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="是啊 是啊 shì a yes Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">是啊</strong><span class="word-pinyin">shì a</span></div>
+              <div class="word-definition"><span>yes</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="晚上 晚上 wǎnshàng night, at night What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">晚上</strong><span class="word-pinyin">wǎnshàng</span></div>
+              <div class="word-definition"><span>night, at night</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="月 月 yuè moon/month My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">月</strong><span class="word-pinyin">yuè</span></div>
+              <div class="word-definition"><span>moon/month</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="有 有 yǒu To have; there is / are I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">有</strong><span class="word-pinyin">yǒu</span></div>
+              <div class="word-definition"><span>To have; there is / are</span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="有一天 有一天 yǒu yìtiān one day Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">有一天</strong><span class="word-pinyin">yǒu yìtiān</span></div>
+              <div class="word-definition"><span>one day</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="朋友 朋友 péngyǒu friend Welcome! My First Book of Chinese Words Let&#x27;s Learn Mandarin, Taiwanese Class My First Book of Chinese Words" data-state="new" data-sources="1 2">
+              <div class="word-form"><strong lang="zh-Hant">朋友</strong><span class="word-pinyin">péngyǒu</span></div>
+              <div class="word-definition"><span>friend</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!, My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="杯 杯 bēi cup What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">杯</strong><span class="word-pinyin">bēi</span></div>
+              <div class="word-definition"><span>cup</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="東西 东西 dōngxi thing Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">東西</strong><span class="word-pinyin">dōngxi</span></div>
+              <div class="word-definition"><span>thing</span><span class="word-simplified">Simplified: <span lang="zh-Hans">东西</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="棵 棵 kē measure word for plants, trees, and leafy vegetables Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">棵</strong><span class="word-pinyin">kē</span></div>
+              <div class="word-definition"><span>measure word for plants, trees, and leafy vegetables</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="樹 树 shù tree Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">樹</strong><span class="word-pinyin">shù</span></div>
+              <div class="word-definition"><span>tree</span><span class="word-simplified">Simplified: <span lang="zh-Hans">树</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="橡子 橡子 xiàngzi acorn Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">橡子</strong><span class="word-pinyin">xiàngzi</span></div>
+              <div class="word-definition"><span>acorn</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="歡迎 欢迎 huānyíng to welcome Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">歡迎</strong><span class="word-pinyin">huānyíng</span></div>
+              <div class="word-definition"><span>to welcome</span><span class="word-simplified">Simplified: <span lang="zh-Hans">欢迎</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="每天 每天 měitiān every day My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">每天</strong><span class="word-pinyin">měitiān</span></div>
+              <div class="word-definition"><span>every day</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="沒 没 méi not I Have Two Younger Brothers Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">沒</strong><span class="word-pinyin">méi</span></div>
+              <div class="word-definition"><span>not</span><span class="word-simplified">Simplified: <span lang="zh-Hans">没</span></span></div>
+              <div class="word-context"><span class="word-lessons">I Have Two Younger Brothers</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="沒關係 没关系 méi guānxi it&#x27;s all right; no worries Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">沒關係</strong><span class="word-pinyin">méi guānxi</span></div>
+              <div class="word-definition"><span>it&#x27;s all right; no worries</span><span class="word-simplified">Simplified: <span lang="zh-Hans">没关系</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="法國 法国 Fǎguó France She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">法國</strong><span class="word-pinyin">Fǎguó</span></div>
+              <div class="word-definition"><span>France</span><span class="word-simplified">Simplified: <span lang="zh-Hans">法国</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="法文 法文 Fǎwén French language My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">法文</strong><span class="word-pinyin">Fǎwén</span></div>
+              <div class="word-definition"><span>French language</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="洞 洞 dòng hole Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">洞</strong><span class="word-pinyin">dòng</span></div>
+              <div class="word-definition"><span>hole</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="烹飪 烹饪 pēngrèn cooking What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">烹飪</strong><span class="word-pinyin">pēngrèn</span></div>
+              <div class="word-definition"><span>cooking</span><span class="word-simplified">Simplified: <span lang="zh-Hans">烹饪</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="熊貓 熊猫 xióngmāo panda My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">熊貓</strong><span class="word-pinyin">xióngmāo</span></div>
+              <div class="word-definition"><span>panda</span><span class="word-simplified">Simplified: <span lang="zh-Hans">熊猫</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="燈籠 灯笼 dēnglóng lantern My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">燈籠</strong><span class="word-pinyin">dēnglóng</span></div>
+              <div class="word-definition"><span>lantern</span><span class="word-simplified">Simplified: <span lang="zh-Hans">灯笼</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="父母 父母 fúmǔ parents in a formal way Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">父母</strong><span class="word-pinyin">fúmǔ</span></div>
+              <div class="word-definition"><span>parents in a formal way</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="爸爸 爸爸 bàba father, dad My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">爸爸</strong><span class="word-pinyin">bàba</span></div>
+              <div class="word-definition"><span>father, dad</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="狗 狗 gǒu dog My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">狗</strong><span class="word-pinyin">gǒu</span></div>
+              <div class="word-definition"><span>dog</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="王 王 Wáng Example Surname (King/monarch/ruler) Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">王</strong><span class="word-pinyin">Wáng</span></div>
+              <div class="word-definition"><span>Example Surname (King/monarch/ruler)</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="王明文 王明文 Wáng Míngwén Example of a Name Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">王明文</strong><span class="word-pinyin">Wáng Míngwén</span></div>
+              <div class="word-definition"><span>Example of a Name</span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="玩 玩 wán to have fun, to play Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">玩</strong><span class="word-pinyin">wán</span></div>
+              <div class="word-definition"><span>to have fun, to play</span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="現在 现在 xiànzài now Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">現在</strong><span class="word-pinyin">xiànzài</span></div>
+              <div class="word-definition"><span>now</span><span class="word-simplified">Simplified: <span lang="zh-Hans">现在</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="球 球 qiú scoop; ball What Do You Usually Like to Do? My First Book of Chinese Words Let&#x27;s Learn Mandarin, Taiwanese Class My First Book of Chinese Words" data-state="new" data-sources="1 2">
+              <div class="word-form"><strong lang="zh-Hant">球</strong><span class="word-pinyin">qiú</span></div>
+              <div class="word-definition"><span>scoop; ball</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?, My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="畢業了 毕业了 bìyè le graduated She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">畢業了</strong><span class="word-pinyin">bìyè le</span></div>
+              <div class="word-definition"><span>graduated</span><span class="word-simplified">Simplified: <span lang="zh-Hans">毕业了</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="看 看 kàn to see, look, watch, read What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">看</strong><span class="word-pinyin">kàn</span></div>
+              <div class="word-definition"><span>to see, look, watch, read</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="看到 看到 kàndào to see Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">看到</strong><span class="word-pinyin">kàndào</span></div>
+              <div class="word-definition"><span>to see</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="看書 看书 kàn shū read books What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">看書</strong><span class="word-pinyin">kàn shū</span></div>
+              <div class="word-definition"><span>read books</span><span class="word-simplified">Simplified: <span lang="zh-Hans">看书</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="看電影 看电影 kàn diànyǐng watch movies What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">看電影</strong><span class="word-pinyin">kàn diànyǐng</span></div>
+              <div class="word-definition"><span>watch movies</span><span class="word-simplified">Simplified: <span lang="zh-Hans">看电影</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="睡覺 睡觉 shuìjiào to sleep Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">睡覺</strong><span class="word-pinyin">shuìjiào</span></div>
+              <div class="word-definition"><span>to sleep</span><span class="word-simplified">Simplified: <span lang="zh-Hans">睡觉</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="筷子 筷子 kuàizi chopsticks My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">筷子</strong><span class="word-pinyin">kuàizi</span></div>
+              <div class="word-definition"><span>chopsticks</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="米 米 mǐ rice My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">米</strong><span class="word-pinyin">mǐ</span></div>
+              <div class="word-definition"><span>rice</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="紅 红 hóng red My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">紅</strong><span class="word-pinyin">hóng</span></div>
+              <div class="word-definition"><span>red</span><span class="word-simplified">Simplified: <span lang="zh-Hans">红</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="累 累 lèi tired, tiring My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">累</strong><span class="word-pinyin">lèi</span></div>
+              <div class="word-definition"><span>tired, tiring</span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="網球 网球 wǎngqiú tennis What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">網球</strong><span class="word-pinyin">wǎngqiú</span></div>
+              <div class="word-definition"><span>tennis</span><span class="word-simplified">Simplified: <span lang="zh-Hans">网球</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="繼續 继续 jìxù to continue doing Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">繼續</strong><span class="word-pinyin">jìxù</span></div>
+              <div class="word-definition"><span>to continue doing</span><span class="word-simplified">Simplified: <span lang="zh-Hans">继续</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="结婚了 结婚了 jiéhūn le married She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">结婚了</strong><span class="word-pinyin">jiéhūn le</span></div>
+              <div class="word-definition"><span>married</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="美國 美国 Měiguó America Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">美國</strong><span class="word-pinyin">Měiguó</span></div>
+              <div class="word-definition"><span>America</span><span class="word-simplified">Simplified: <span lang="zh-Hans">美国</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="美國人 美国人 měi guó rén American Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">美國人</strong><span class="word-pinyin">měi guó rén</span></div>
+              <div class="word-definition"><span>American</span><span class="word-simplified">Simplified: <span lang="zh-Hans">美国人</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="美好 美好 měihǎo wonderful Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">美好</strong><span class="word-pinyin">měihǎo</span></div>
+              <div class="word-definition"><span>wonderful</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="老師 老师 lǎoshī teacher My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">老師</strong><span class="word-pinyin">lǎoshī</span></div>
+              <div class="word-definition"><span>teacher</span><span class="word-simplified">Simplified: <span lang="zh-Hans">老师</span></span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="耳 耳 ěr ear My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">耳</strong><span class="word-pinyin">ěr</span></div>
+              <div class="word-definition"><span>ear</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="聽 听 tīng to listen What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">聽</strong><span class="word-pinyin">tīng</span></div>
+              <div class="word-definition"><span>to listen</span><span class="word-simplified">Simplified: <span lang="zh-Hans">听</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="臺北/台北 台北 Táiběi Taipei Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">臺北/台北</strong><span class="word-pinyin">Táiběi</span></div>
+              <div class="word-definition"><span>Taipei</span><span class="word-simplified">Simplified: <span lang="zh-Hans">台北</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="臺灣/台灣 台湾 Táiwān Taiwan Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">臺灣/台灣</strong><span class="word-pinyin">Táiwān</span></div>
+              <div class="word-definition"><span>Taiwan</span><span class="word-simplified">Simplified: <span lang="zh-Hans">台湾</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="臺灣人/台灣人 台湾人 Táiwān rén Taiwanese Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">臺灣人/台灣人</strong><span class="word-pinyin">Táiwān rén</span></div>
+              <div class="word-definition"><span>Taiwanese</span><span class="word-simplified">Simplified: <span lang="zh-Hans">台湾人</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="舉重 举重 jǔzhòng weightlifting What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">舉重</strong><span class="word-pinyin">jǔzhòng</span></div>
+              <div class="word-definition"><span>weightlifting</span><span class="word-simplified">Simplified: <span lang="zh-Hans">举重</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="芋頭 芋头 yùtou taro What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">芋頭</strong><span class="word-pinyin">yùtou</span></div>
+              <div class="word-definition"><span>taro</span><span class="word-simplified">Simplified: <span lang="zh-Hans">芋头</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="芒果 芒果 mángguǒ mango What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">芒果</strong><span class="word-pinyin">mángguǒ</span></div>
+              <div class="word-definition"><span>mango</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="花栗鼠 花栗鼠 huālìshǔ chipmunk Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">花栗鼠</strong><span class="word-pinyin">huālìshǔ</span></div>
+              <div class="word-definition"><span>chipmunk</span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="茶 茶 chá tea My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">茶</strong><span class="word-pinyin">chá</span></div>
+              <div class="word-definition"><span>tea</span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="薄荷 薄荷 bòhé mint What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">薄荷</strong><span class="word-pinyin">bòhé</span></div>
+              <div class="word-definition"><span>mint</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="西雅圖 西雅图 xīyǎtú Seattle Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">西雅圖</strong><span class="word-pinyin">xīyǎtú</span></div>
+              <div class="word-definition"><span>Seattle</span><span class="word-simplified">Simplified: <span lang="zh-Hans">西雅图</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="認識 认识 rènshì to know, meet, recognize Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">認識</strong><span class="word-pinyin">rènshì</span></div>
+              <div class="word-definition"><span>to know, meet, recognize</span><span class="word-simplified">Simplified: <span lang="zh-Hans">认识</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="説 说 shuō to say My Father Works at a Computer Company Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">説</strong><span class="word-pinyin">shuō</span></div>
+              <div class="word-definition"><span>to say</span><span class="word-simplified">Simplified: <span lang="zh-Hans">说</span></span></div>
+              <div class="word-context"><span class="word-lessons">My Father Works at a Computer Company</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="誰 谁 shéi who, whom Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">誰</strong><span class="word-pinyin">shéi</span></div>
+              <div class="word-definition"><span>who, whom</span><span class="word-simplified">Simplified: <span lang="zh-Hans">谁</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="請問 请问 qǐng wèn May I ask you..., excuse me, ... Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">請問</strong><span class="word-pinyin">qǐng wèn</span></div>
+              <div class="word-definition"><span>May I ask you..., excuse me, ...</span><span class="word-simplified">Simplified: <span lang="zh-Hans">请问</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="貴姓 贵姓 guì xìng? Polite way to ask someone&#x27;s surname Hello! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">貴姓</strong><span class="word-pinyin">guì xìng?</span></div>
+              <div class="word-definition"><span>Polite way to ask someone&#x27;s surname</span><span class="word-simplified">Simplified: <span lang="zh-Hans">贵姓</span></span></div>
+              <div class="word-context"><span class="word-lessons">Hello!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="跑步 跑步 pǎobù to run, to job What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">跑步</strong><span class="word-pinyin">pǎobù</span></div>
+              <div class="word-definition"><span>to run, to job</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="跳舞 跳舞 tiào wǔ to dance What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">跳舞</strong><span class="word-pinyin">tiào wǔ</span></div>
+              <div class="word-definition"><span>to dance</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="踢足球 踢足球 tī zúqiú play soccer What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">踢足球</strong><span class="word-pinyin">tī zúqiú</span></div>
+              <div class="word-definition"><span>play soccer</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="迪士尼樂園 迪士尼乐园 Díshìní lèyuán Disneyland Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">迪士尼樂園</strong><span class="word-pinyin">Díshìní lèyuán</span></div>
+              <div class="word-definition"><span>Disneyland</span><span class="word-simplified">Simplified: <span lang="zh-Hans">迪士尼乐园</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="這 这 zhè this Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">這</strong><span class="word-pinyin">zhè</span></div>
+              <div class="word-definition"><span>this</span><span class="word-simplified">Simplified: <span lang="zh-Hans">这</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="週末 周末 zhōumò weekend What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">週末</strong><span class="word-pinyin">zhōumò</span></div>
+              <div class="word-definition"><span>weekend</span><span class="word-simplified">Simplified: <span lang="zh-Hans">周末</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="運動 运动 yùndòng to exercise What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">運動</strong><span class="word-pinyin">yùndòng</span></div>
+              <div class="word-definition"><span>to exercise</span><span class="word-simplified">Simplified: <span lang="zh-Hans">运动</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="還 还 hái also, in addition, as well What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">還</strong><span class="word-pinyin">hái</span></div>
+              <div class="word-definition"><span>also, in addition, as well</span><span class="word-simplified">Simplified: <span lang="zh-Hans">还</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="還是 还是 háishì still Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">還是</strong><span class="word-pinyin">háishì</span></div>
+              <div class="word-definition"><span>still</span><span class="word-simplified">Simplified: <span lang="zh-Hans">还是</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="都 都 dōu both, all She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">都</strong><span class="word-pinyin">dōu</span></div>
+              <div class="word-definition"><span>both, all</span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="鄰居 邻居 línjū neighbor Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">鄰居</strong><span class="word-pinyin">línjū</span></div>
+              <div class="word-definition"><span>neighbor</span><span class="word-simplified">Simplified: <span lang="zh-Hans">邻居</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="銀行 银行 yínháng bank She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">銀行</strong><span class="word-pinyin">yínháng</span></div>
+              <div class="word-definition"><span>bank</span><span class="word-simplified">Simplified: <span lang="zh-Hans">银行</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="隻 只 zhī measure word for animals Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">隻</strong><span class="word-pinyin">zhī</span></div>
+              <div class="word-definition"><span>measure word for animals</span><span class="word-simplified">Simplified: <span lang="zh-Hans">只</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="雨傘 雨伞 yǔsǎn umbrella My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">雨傘</strong><span class="word-pinyin">yǔsǎn</span></div>
+              <div class="word-definition"><span>umbrella</span><span class="word-simplified">Simplified: <span lang="zh-Hans">雨伞</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="電腦 电脑 diànnǎo computer She is not a student Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">電腦</strong><span class="word-pinyin">diànnǎo</span></div>
+              <div class="word-definition"><span>computer</span><span class="word-simplified">Simplified: <span lang="zh-Hans">电脑</span></span></div>
+              <div class="word-context"><span class="word-lessons">She is not a student</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="電視 电视 diànshì television What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">電視</strong><span class="word-pinyin">diànshì</span></div>
+              <div class="word-definition"><span>television</span><span class="word-simplified">Simplified: <span lang="zh-Hans">电视</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="音樂 音乐 yīnyuè music What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">音樂</strong><span class="word-pinyin">yīnyuè</span></div>
+              <div class="word-definition"><span>music</span><span class="word-simplified">Simplified: <span lang="zh-Hans">音乐</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="頭 头 tóu head My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">頭</strong><span class="word-pinyin">tóu</span></div>
+              <div class="word-definition"><span>head</span><span class="word-simplified">Simplified: <span lang="zh-Hans">头</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="風箏 风筝 fēngzhēng kite My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">風箏</strong><span class="word-pinyin">fēngzhēng</span></div>
+              <div class="word-definition"><span>kite</span><span class="word-simplified">Simplified: <span lang="zh-Hans">风筝</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="香草 香草 xiāngcǎo vanilla What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">香草</strong><span class="word-pinyin">xiāngcǎo</span></div>
+              <div class="word-definition"><span>vanilla</span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="騎車 骑车 qíchē ride a bike / cycling What Do You Usually Like to Do? Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">騎車</strong><span class="word-pinyin">qíchē</span></div>
+              <div class="word-definition"><span>ride a bike / cycling</span><span class="word-simplified">Simplified: <span lang="zh-Hans">骑车</span></span></div>
+              <div class="word-context"><span class="word-lessons">What Do You Usually Like to Do?</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="高興 高兴 gāoxìng happy, glad Welcome! Let&#x27;s Learn Mandarin, Taiwanese Class" data-state="new" data-sources="1">
+              <div class="word-form"><strong lang="zh-Hant">高興</strong><span class="word-pinyin">gāoxìng</span></div>
+              <div class="word-definition"><span>happy, glad</span><span class="word-simplified">Simplified: <span lang="zh-Hans">高兴</span></span></div>
+              <div class="word-context"><span class="word-lessons">Welcome!</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="鳥 鸟 niǎo bird Episode 1: A Perfect Tree Bird and Kip" data-state="new" data-sources="3">
+              <div class="word-form"><strong lang="zh-Hant">鳥</strong><span class="word-pinyin">niǎo</span></div>
+              <div class="word-definition"><span>bird</span><span class="word-simplified">Simplified: <span lang="zh-Hans">鸟</span></span></div>
+              <div class="word-context"><span class="word-lessons">Episode 1: A Perfect Tree</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="鷗 鸥 ōu gull My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">鷗</strong><span class="word-pinyin">ōu</span></div>
+              <div class="word-definition"><span>gull</span><span class="word-simplified">Simplified: <span lang="zh-Hans">鸥</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+            <li class="word-row" data-search="龍 龙 lóng dragon My First Book of Chinese Words My First Book of Chinese Words" data-state="new" data-sources="2">
+              <div class="word-form"><strong lang="zh-Hant">龍</strong><span class="word-pinyin">lóng</span></div>
+              <div class="word-definition"><span>dragon</span><span class="word-simplified">Simplified: <span lang="zh-Hans">龙</span></span></div>
+              <div class="word-context"><span class="word-lessons">My First Book of Chinese Words</span><span class="word-state state-new">New</span></div>
+            </li>
+
+        </ul>
+        <nav id="word-pagination" class="word-pagination" aria-label="Vocabulary pages" hidden><button id="previous-page" type="button">Previous</button><span id="page-status" aria-live="polite"></span><button id="next-page" type="button">Next</button></nav>
+        <p id="no-results" class="no-results" hidden>No words match those filters.</p>
+        <p class="small-note">Anki states last synced Oct 12, 2026; they do not establish mastery.</p>
+      </section>
+      <section id="atlas-sources" class="atlas-sources" aria-labelledby="atlas-sources-title">
+        <h2 id="atlas-sources-title">Source material</h2>
+        <div class="atlas-source-grid">
+
+            <a class="atlas-source-card" href="https://chinese.littlefox.com/en/story/contents_list/DP000750" target="_blank" rel="noopener noreferrer">
+              <span class="atlas-source-kind">Video</span><h3>Bird and Kip</h3><p>1 lesson</p>
+              <span class="atlas-source-action">Open source ↗</span>
+            </a>
+
+            <a class="atlas-source-card" href="https://taiwancenter.taiwan-world.net/material/basic/content/53" target="_blank" rel="noopener noreferrer">
+              <span class="atlas-source-kind">Textbook</span><h3>Let&#x27;s Learn Mandarin, Taiwanese Class</h3><p>6 lessons</p>
+              <span class="atlas-source-action">Open source ↗</span>
+            </a>
+
+            <a class="atlas-source-card" href="https://www.tuttlepublishing.com/china/my-first-book-of-chinese-words-9780804849418" target="_blank" rel="noopener noreferrer">
+              <span class="atlas-source-kind">Book</span><h3>My First Book of Chinese Words</h3><p>1 lesson</p>
+              <span class="atlas-source-action">Open source ↗</span>
+            </a>
+
+        </div>
+      </section>
     </div>
-  </div>
-
-  <main class="wrap">
-    <div class="stats" aria-label="Study totals">
-      <div class="stat"><span class="stat-label">Lessons</span><strong>8</strong><span class="stat-note">across 3 sources</span></div>
-      <div class="stat"><span class="stat-label">Lesson words</span><strong>189</strong><span class="stat-note">distinct words collected</span></div>
-      <div class="stat"><span class="stat-label">In review</span><strong>40</strong><span class="stat-note">Anki cards reviewing</span></div>
-    </div>
-
-    <section id="progress" class="section" aria-labelledby="progress-title">
-      <div class="section-head"><div><p class="eyebrow">The journey so far</p><h2 id="progress-title">Progress at a glance</h2></div><p>Lessons and vocabulary collected over time, plus a snapshot from my local Anki deck.</p></div>
-      <div class="progress-grid">
-        <div class="panel chart-panel">
-          <div class="panel-top"><div><h3>Vocabulary growth</h3><p class="panel-subtitle">Distinct words linked to lessons</p></div><span class="chart-key">Words</span></div>
-
-          <svg class="growth-chart" viewBox="0 0 800 340" role="img" aria-labelledby="chart-title chart-desc">
-            <title id="chart-title">Vocabulary grew to 189 lesson words</title>
-            <desc id="chart-desc">Cumulative count from Sept. 27, 2026 to Oct. 12, 2026.</desc>
-            <line x1="55" y1="290.0" x2="740" y2="290.0" stroke="#d5ddd3"/><text x="43" y="290.0" dominant-baseline="middle" text-anchor="end" fill="#64736c" font-size="13">0</text><line x1="55" y1="225.0" x2="740" y2="225.0" stroke="#d5ddd3"/><text x="43" y="225.0" dominant-baseline="middle" text-anchor="end" fill="#64736c" font-size="13">50</text><line x1="55" y1="160.0" x2="740" y2="160.0" stroke="#d5ddd3"/><text x="43" y="160.0" dominant-baseline="middle" text-anchor="end" fill="#64736c" font-size="13">100</text><line x1="55" y1="95.0" x2="740" y2="95.0" stroke="#d5ddd3"/><text x="43" y="95.0" dominant-baseline="middle" text-anchor="end" fill="#64736c" font-size="13">150</text><line x1="55" y1="30.0" x2="740" y2="30.0" stroke="#d5ddd3"/><text x="43" y="30.0" dominant-baseline="middle" text-anchor="end" fill="#64736c" font-size="13">200</text>
-            <path d="M 55.0 143.1 H 694.3 V 117.1 H 740.0 V 44.3" fill="none" stroke="#1f6956" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="55.0" cy="143.1" r="5" fill="#1f6956"><title>Sept. 27, 2026: 113 words</title></circle><circle cx="694.3" cy="117.1" r="5" fill="#1f6956"><title>Oct. 11, 2026: 133 words</title></circle><circle cx="740.0" cy="44.3" r="5" fill="#1f6956"><title>Oct. 12, 2026: 189 words</title></circle>
-            <text x="55" y="320" fill="#64736c" font-size="13">Sep 27</text>
-            <text x="740" y="320" text-anchor="end" fill="#64736c" font-size="13">Oct 12</text>
-          </svg>
-          <div class="chart-foot"><span>Tracking began September 27, 2026</span><span>8 lessons recorded</span></div>
-
-        </div>
-        <div class="panel anki-panel">
-          <div><h3>Anki snapshot</h3><p class="panel-subtitle">Last synced October 12, 2026</p></div>
-
-            <p class="anki-number">189 <small>matched cards</small></p>
-            <div class="status-bar" aria-hidden="true"><span class="status-new" style="width: 78.84%"></span><span class="status-reviewing" style="width: 21.16%"></span></div>
-            <ul class="status-list"><li><span class="swatch status-new" aria-hidden="true"></span>New <b>149</b></li><li><span class="swatch status-reviewing" aria-hidden="true"></span>Reviewing <b>40</b></li></ul>
-            <p class="anki-note">These are Anki card states at the last local sync. “Reviewing” is not a claim that a word has been mastered.</p>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="sources" class="section" aria-labelledby="sources-title">
-      <div class="section-head"><div><p class="eyebrow">Where the words come from</p><h2 id="sources-title">Study sources</h2></div><p>Every lesson belongs to a source. The links lead to the original material or a page about it.</p></div>
-      <div class="source-grid">
-
-        <article class="panel source-card textbook">
-          <div class="source-visual textbook"><div class="cover" aria-hidden="true">語</div></div>
-          <div class="source-body"><span class="source-kind">Textbook</span><h3>Let&#x27;s Learn Mandarin, Taiwanese Class</h3><p class="source-creator">Overseas Community Affairs Council, R.O.C. (TAIWAN)</p><div class="source-bottom"><strong>6 lessons</strong><a class="text-link external" href="https://taiwancenter.taiwan-world.net/material/basic/content/53" target="_blank" rel="noopener noreferrer" aria-label="Open source page for Let&#x27;s Learn Mandarin, Taiwanese Class">Source page</a></div></div>
-        </article>
-
-        <article class="panel source-card book">
-          <div class="source-visual book"><div class="cover" aria-hidden="true">字</div></div>
-          <div class="source-body"><span class="source-kind">Book</span><h3>My First Book of Chinese Words</h3><p class="source-creator">Faye-Lynn Wu</p><div class="source-bottom"><strong>1 lesson</strong><a class="text-link external" href="https://www.tuttlepublishing.com/china/my-first-book-of-chinese-words-9780804849418" target="_blank" rel="noopener noreferrer" aria-label="Open source page for My First Book of Chinese Words">Source page</a></div></div>
-        </article>
-
-        <article class="panel source-card video">
-          <div class="source-visual video"><div class="cover" aria-hidden="true">▶</div></div>
-          <div class="source-body"><span class="source-kind">Video</span><h3>Bird and Kip</h3><p class="source-creator">Little Fox Chinese</p><div class="source-bottom"><strong>1 lesson</strong><a class="text-link external" href="https://chinese.littlefox.com/en/story/contents_list/DP000750" target="_blank" rel="noopener noreferrer" aria-label="Open source page for Bird and Kip">Source page</a></div></div>
-        </article>
-
-      </div>
-    </section>
-
-    <section id="lessons" class="section" aria-labelledby="lessons-title">
-      <div class="section-head"><div><p class="eyebrow">A record of what I studied</p><h2 id="lessons-title">Lessons by source</h2></div><p>A short description and vocabulary count for each lesson. Words reused across lessons count once in the total above.</p></div>
-      <div class="lesson-groups">
-        <div class="panel lesson-group">
-          <div class="lesson-group-heading"><span>Textbook · 6 lessons</span><h3>Let&#x27;s Learn Mandarin, Taiwanese Class</h3><p>Overseas Community Affairs Council, R.O.C. (TAIWAN)</p></div>
-          <ol class="lesson-list"><li><div><span class="lesson-title">Hello!</span><span class="lesson-description">Learn to great others</span></div><span class="word-count">21 words</span></li><li><div><span class="lesson-title">I Have Two Younger Brothers</span><span class="lesson-description">Talk about family members</span></div><span class="word-count">15 words</span></li><li><div><span class="lesson-title">She is not a student</span><span class="lesson-description">Talk about occupations and marital status</span></div><span class="word-count">22 words</span></li><li><div><span class="lesson-title">My Father Works at a Computer Company</span><span class="lesson-description">Talk about occupations and work places</span></div><span class="word-count">13 words</span></li><li><div><span class="lesson-title">Welcome!</span><span class="lesson-description">Introduce yourself, others, and express vacation plans</span></div><span class="word-count">23 words</span></li><li><div><span class="lesson-title">What Do You Usually Like to Do?</span><span class="lesson-description">List hobbies and interests</span></div><span class="word-count">39 words</span></li></ol>
-        </div><div class="panel lesson-group">
-          <div class="lesson-group-heading"><span>Book · 1 lesson</span><h3>My First Book of Chinese Words</h3><p>Faye-Lynn Wu</p></div>
-          <ol class="lesson-list"><li><div><span class="lesson-title">My First Book of Chinese Words</span><span class="lesson-description">26 words, A-Z</span></div><span class="word-count">26 words</span></li></ol>
-        </div><div class="panel lesson-group">
-          <div class="lesson-group-heading"><span>Video · 1 lesson</span><h3>Bird and Kip</h3><p>Little Fox Chinese</p></div>
-          <ol class="lesson-list"><li><div><span class="lesson-title">Episode 1: A Perfect Tree</span><span class="lesson-description">Bird find a tree to live in and meets Kip</span></div><span class="word-count">33 words</span></li></ol>
-        </div>
-      </div>
-    </section>
-
-    <aside class="method" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">※</span><div><h2 id="method-title">How this report counts progress</h2><p>“Lesson words” counts each distinct vocabulary entry linked to a lesson once, even if it appears in multiple lessons. The chart uses the date each word was added to the study site. Anki status is a separate snapshot taken when I last synced locally; neither measure establishes fluency.</p></div></aside>
   </main>
-  <footer><div class="wrap"><span>A personal Mandarin learning journal</span><span>Static report · October 2026</span></div></footer>
+  <footer class="site-footer"><div class="wrap"><span>My Chinese Journey</span><span>Study snapshot · Oct 2026</span></div></footer>
 </body>
 </html>

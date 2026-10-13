@@ -11,7 +11,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from lessons.anki_sync import AnkiSyncError, sync_anki_progress
-from lessons.models import Lesson, Source
+from lessons.models import Lesson, Source, Word
 from lessons.views import progress_data
 
 
@@ -23,7 +23,7 @@ class Command(BaseCommand):
             "--output",
             type=Path,
             default=settings.BASE_DIR / "docs",
-            help="Directory to write index.html and public_report.css (default: docs/).",
+            help="Directory to write the report HTML, CSS, and JavaScript (default: docs/).",
         )
         parser.add_argument(
             "--sync-anki",
@@ -46,10 +46,10 @@ class Command(BaseCommand):
             "created_at", "id"
         )
         sources = Source.objects.prefetch_related(Prefetch("lessons", queryset=lessons))
-        kind_order = {Source.Kind.TEXTBOOK: 0, Source.Kind.BOOK: 1, Source.Kind.VIDEO: 2}
         source_rows = []
-        for source in sorted(sources, key=lambda item: (kind_order.get(item.kind, 3), item.name)):
+        for source in sorted(sources, key=lambda item: item.name.casefold()):
             source_rows.append({
+                "id": source.id,
                 "name": source.name,
                 "creator": source.creator,
                 "kind": source.kind,
@@ -60,25 +60,60 @@ class Command(BaseCommand):
         for source in source_rows:
             source["lesson_count"] = len(source["lessons"])
 
+        word_rows = []
+        words = (
+            Word.objects.filter(lessons__isnull=False)
+            .distinct()
+            .select_related("anki_progress")
+            .prefetch_related("lessons__source")
+            .order_by("traditional", "pinyin", "id")
+        )
+        for word in words:
+            linked_lessons = sorted(word.lessons.all(), key=lambda lesson: (lesson.created_at, lesson.id))
+            lesson_names = [lesson.title for lesson in linked_lessons]
+            source_ids = sorted({lesson.source_id for lesson in linked_lessons})
+            anki_progress = getattr(word, "anki_progress", None)
+            word_rows.append({
+                "word": word,
+                "lesson_names": lesson_names,
+                "source_ids": " ".join(map(str, source_ids)),
+                "search_text": " ".join((
+                    word.traditional, word.simplified, word.pinyin, word.english,
+                    *lesson_names, *(lesson.source.name for lesson in linked_lessons),
+                )),
+                "state": anki_progress.state if anki_progress else "unmatched",
+                "state_label": anki_progress.get_state_display() if anki_progress else "No Anki match",
+            })
+
+        featured_word = next((row for row in word_rows if row["word"].traditional == "歡迎"), None)
+        if featured_word is None and word_rows:
+            featured_word = word_rows[0]
+        featured_meaning = (
+            "Welcome!" if featured_word and featured_word["word"].traditional == "歡迎"
+            else featured_word["word"].english if featured_word else ""
+        )
+
         progress = progress_data()
         status = progress["anki_status_chart"]
-        segments = [segment for segment in status["segments"] if segment["count"]] if status else []
         context = {
             **progress,
             "sources": source_rows,
             "source_count": len(source_rows),
+            "word_rows": word_rows,
+            "featured_word": featured_word,
+            "featured_meaning": featured_meaning,
             "report_date": timezone.localtime(),
-            "anki_segments": segments,
-            "anki_matched": sum(segment["count"] for segment in segments if segment["key"] != "unmatched"),
-            "anki_reviewing": next((segment["count"] for segment in segments if segment["key"] == "reviewing"), 0),
+            "anki_reviewing": next((segment["count"] for segment in status["segments"] if segment["key"] == "reviewing"), 0) if status else 0,
         }
         html = render_to_string("lessons/public_report.html", context)
         html = "\n".join(line.rstrip() for line in html.splitlines()) + "\n"
         css = (Path(__file__).resolve().parents[2] / "static/lessons/public_report.css").read_text()
+        javascript = (Path(__file__).resolve().parents[2] / "static/lessons/public_report.js").read_text()
 
         output = options["output"].resolve()
         output.mkdir(parents=True, exist_ok=True)
         self._write_file(output / "public_report.css", css)
+        self._write_file(output / "public_report.js", javascript)
         self._write_file(output / "index.html", html)
         self.stdout.write(self.style.SUCCESS(f"Built report: {output / 'index.html'}"))
 

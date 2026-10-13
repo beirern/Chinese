@@ -213,6 +213,8 @@ class PublicReportTests(TestCase):
             traditional="你好", simplified="你好", pinyin="nǐ hǎo", english="hello"
         )
         lesson.vocabulary.add(word)
+        next_lesson = Lesson.objects.create(source=source, title="More greetings", description="Practice")
+        next_lesson.vocabulary.add(word)
         AnkiProgress.objects.create(
             word=word, card_id=123, state=AnkiProgress.State.REVIEWING,
             synced_at=timezone.now(),
@@ -223,13 +225,19 @@ class PublicReportTests(TestCase):
             call_command("build_progress_report", output=output)
             html = (output / "index.html").read_text()
             self.assertTrue((output / "public_report.css").is_file())
+            self.assertTrue((output / "public_report.js").is_file())
 
+        self.assertIn("My Chinese", html)
+        self.assertIn('<div class="feature-caption"><span>nǐ hǎo</span><strong>hello</strong></div>', html)
         self.assertIn("Book &amp; More", html)
         self.assertIn('href="https://example.com/book"', html)
         self.assertIn("Greetings", html)
-        self.assertIn("Say &lt;hello&gt;", html)
-        self.assertIn("1 <small>matched cards</small>", html)
-        self.assertIn("Reviewing <b>1</b>", html)
+        self.assertIn("More greetings", html)
+        self.assertEqual(html.count('class="word-row"'), 1)
+        self.assertIn('data-search="你好 你好 nǐ hǎo hello Greetings More greetings Book &amp; More Book &amp; More"', html)
+        self.assertIn('data-state="reviewing"', html)
+        self.assertIn('aria-label="Vocabulary pages"', html)
+        self.assertIn("1</strong><span>cards reviewing", html)
         self.assertNotIn("/admin/", html)
 
     @patch("lessons.management.commands.build_progress_report.sync_anki_progress")
