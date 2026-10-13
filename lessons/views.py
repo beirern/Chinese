@@ -62,6 +62,32 @@ def home(request):
 
 
 def progress(request):
+    data = progress_data()
+    history = data["history"]
+
+    week_ago = timezone.localdate() - timedelta(days=7)
+    comparison_available = bool(history and history[0]["day"] <= week_ago)
+    week_ago_lessons = week_ago_words = 0
+    if comparison_available:
+        for row in history:
+            if row["day"] > week_ago:
+                break
+            week_ago_lessons = row["lesson_total"]
+            week_ago_words = row["word_total"]
+
+    return render(request, "lessons/progress.html", {
+        **data,
+        "history": reversed(history),
+        "comparison_available": comparison_available,
+        "week_ago": week_ago,
+        "week_ago_lessons": week_ago_lessons,
+        "week_ago_words": week_ago_words,
+        "lessons_added_this_week": data["lesson_total"] - week_ago_lessons,
+        "words_added_this_week": data["word_total"] - week_ago_words,
+    })
+
+
+def progress_data():
     lesson_counts = {
         row["day"]: row["added"]
         for row in Lesson.objects.annotate(day=TruncDate("created_at"))
@@ -91,30 +117,14 @@ def progress(request):
             "word_total": word_total,
         })
 
-    week_ago = timezone.localdate() - timedelta(days=7)
-    comparison_available = bool(history and history[0]["day"] <= week_ago)
-    week_ago_lessons = week_ago_words = 0
-    if comparison_available:
-        for row in history:
-            if row["day"] > week_ago:
-                break
-            week_ago_lessons = row["lesson_total"]
-            week_ago_words = row["word_total"]
-
-    return render(request, "lessons/progress.html", {
-        "history": reversed(history),
+    return {
+        "history": history,
         "chart": progress_chart(history),
         "anki_status_chart": anki_status_chart(word_total),
         "lesson_total": lesson_total,
         "word_total": word_total,
         "tracking_started": history[0]["day"] if history else None,
-        "comparison_available": comparison_available,
-        "week_ago": week_ago,
-        "week_ago_lessons": week_ago_lessons,
-        "week_ago_words": week_ago_words,
-        "lessons_added_this_week": lesson_total - week_ago_lessons,
-        "words_added_this_week": word_total - week_ago_words,
-    })
+    }
 
 
 def anki_status_chart(word_total):

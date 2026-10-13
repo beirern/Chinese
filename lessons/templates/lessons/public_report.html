@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A snapshot of my Mandarin learning through books, video, and lessons.">
+  <title>Mandarin learning journal · Progress report</title>
+  <link rel="stylesheet" href="./public_report.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">文</span><span>Mandarin learning journal</span></a>
+      <nav aria-label="Main navigation"><a href="#progress">Progress</a><a href="#sources">Sources</a><a href="#lessons" class="nav-highlight">Lessons</a></nav>
+    </div>
+  </header>
+
+  <div id="top" class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <p class="eyebrow">A personal study report · Traditional Chinese</p>
+        <h1>Learning, one<br>lesson at a time.</h1>
+        <p class="lead">A snapshot of my Mandarin study through textbooks, books, videos, and stories. Each word here began with something I read, watched, or studied.</p>
+        <div class="hero-meta">
+          <span><span class="live-dot" aria-hidden="true"></span>Report updated {{ report_date|date:"F j, Y" }}</span>
+          {% if tracking_started %}<span>Tracking since {{ tracking_started|date:"F Y" }}</span>{% endif %}
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="art-ring"></div><div class="art-glyph">學</div><div class="art-caption">xué · to learn</div></div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="stats" aria-label="Study totals">
+      <div class="stat"><span class="stat-label">Lessons</span><strong>{{ lesson_total }}</strong><span class="stat-note">across {{ source_count }} source{{ source_count|pluralize }}</span></div>
+      <div class="stat"><span class="stat-label">Lesson words</span><strong>{{ word_total }}</strong><span class="stat-note">distinct words collected</span></div>
+      <div class="stat"><span class="stat-label">In review</span><strong>{% if anki_status_chart %}{{ anki_reviewing }}{% else %}—{% endif %}</strong><span class="stat-note">{% if anki_status_chart %}Anki cards reviewing{% else %}No Anki snapshot yet{% endif %}</span></div>
+    </div>
+
+    <section id="progress" class="section" aria-labelledby="progress-title">
+      <div class="section-head"><div><p class="eyebrow">The journey so far</p><h2 id="progress-title">Progress at a glance</h2></div><p>Lessons and vocabulary collected over time, plus a snapshot from my local Anki deck.</p></div>
+      <div class="progress-grid">
+        <div class="panel chart-panel">
+          <div class="panel-top"><div><h3>Vocabulary growth</h3><p class="panel-subtitle">Distinct words linked to lessons</p></div><span class="chart-key">Words</span></div>
+          {% if chart %}
+          <svg class="growth-chart" viewBox="0 0 800 340" role="img" aria-labelledby="chart-title chart-desc">
+            <title id="chart-title">Vocabulary grew to {{ word_total }} lesson words</title>
+            <desc id="chart-desc">Cumulative count from {{ chart.start_day }} to {{ chart.end_day }}.</desc>
+            {% for tick in chart.ticks %}<line x1="55" y1="{{ tick.y }}" x2="740" y2="{{ tick.y }}" stroke="#d5ddd3"/><text x="43" y="{{ tick.y }}" dominant-baseline="middle" text-anchor="end" fill="#64736c" font-size="13">{{ tick.words }}</text>{% endfor %}
+            <path d="{{ chart.words.path }}" fill="none" stroke="#1f6956" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            {% for point in chart.words.points %}<circle cx="{{ point.x }}" cy="{{ point.y }}" r="5" fill="#1f6956"><title>{{ point.day }}: {{ point.total }} words</title></circle>{% endfor %}
+            <text x="55" y="320" fill="#64736c" font-size="13">{{ chart.start_day|date:"M j" }}</text>
+            <text x="740" y="320" text-anchor="end" fill="#64736c" font-size="13">{{ chart.end_day|date:"M j" }}</text>
+          </svg>
+          <div class="chart-foot"><span>Tracking began {{ tracking_started|date:"F j, Y" }}</span><span>{{ lesson_total }} lessons recorded</span></div>
+          {% else %}<p class="empty-state">The chart will appear after the first lesson or word is added.</p>{% endif %}
+        </div>
+        <div class="panel anki-panel">
+          <div><h3>Anki snapshot</h3><p class="panel-subtitle">{% if anki_status_chart %}Last synced {{ anki_status_chart.last_synced|date:"F j, Y" }}{% else %}No local sync yet{% endif %}</p></div>
+          {% if anki_status_chart %}
+            <p class="anki-number">{{ anki_matched }} <small>matched cards</small></p>
+            <div class="status-bar" aria-hidden="true">{% for segment in anki_segments %}<span class="status-{{ segment.key }}" style="width: {{ segment.percent }}%"></span>{% endfor %}</div>
+            <ul class="status-list">{% for segment in anki_segments %}<li><span class="swatch status-{{ segment.key }}" aria-hidden="true"></span>{{ segment.label }} <b>{{ segment.count }}</b></li>{% endfor %}</ul>
+            <p class="anki-note">These are Anki card states at the last local sync. “Reviewing” is not a claim that a word has been mastered.</p>
+          {% else %}<p class="empty-state">Anki card states will appear after a local sync.</p>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" class="section" aria-labelledby="sources-title">
+      <div class="section-head"><div><p class="eyebrow">Where the words come from</p><h2 id="sources-title">Study sources</h2></div><p>Every lesson belongs to a source. The links lead to the original material or a page about it.</p></div>
+      {% if sources %}<div class="source-grid">
+        {% for source in sources %}
+        <article class="panel source-card {{ source.kind }}">
+          <div class="source-visual {{ source.kind }}"><div class="cover" aria-hidden="true">{% if source.kind == "video" %}▶{% elif source.kind == "book" %}字{% else %}語{% endif %}</div></div>
+          <div class="source-body"><span class="source-kind">{{ source.kind_label }}</span><h3>{{ source.name }}</h3><p class="source-creator">{% if source.creator %}{{ source.creator }}{% else %}&nbsp;{% endif %}</p><div class="source-bottom"><strong>{{ source.lesson_count }} lesson{{ source.lesson_count|pluralize }}</strong>{% if source.url %}<a class="text-link external" href="{{ source.url }}" target="_blank" rel="noopener noreferrer" aria-label="Open source page for {{ source.name }}">Source page</a>{% endif %}</div></div>
+        </article>
+        {% endfor %}
+      </div>{% else %}<div class="panel empty-state">No sources have been added yet.</div>{% endif %}
+    </section>
+
+    <section id="lessons" class="section" aria-labelledby="lessons-title">
+      <div class="section-head"><div><p class="eyebrow">A record of what I studied</p><h2 id="lessons-title">Lessons by source</h2></div><p>A short description and vocabulary count for each lesson. Words reused across lessons count once in the total above.</p></div>
+      {% if lesson_total %}<div class="lesson-groups">
+        {% for source in sources %}{% if source.lessons %}<div class="panel lesson-group">
+          <div class="lesson-group-heading"><span>{{ source.kind_label }} · {{ source.lesson_count }} lesson{{ source.lesson_count|pluralize }}</span><h3>{{ source.name }}</h3>{% if source.creator %}<p>{{ source.creator }}</p>{% endif %}</div>
+          <ol class="lesson-list">{% for lesson in source.lessons %}<li><div><span class="lesson-title">{{ lesson.title }}</span>{% if lesson.description %}<span class="lesson-description">{{ lesson.description }}</span>{% endif %}</div><span class="word-count">{{ lesson.word_count }} word{{ lesson.word_count|pluralize }}</span></li>{% endfor %}</ol>
+        </div>{% endif %}{% endfor %}
+      </div>{% else %}<div class="panel empty-state">No lessons have been added yet.</div>{% endif %}
+    </section>
+
+    <aside class="method" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">※</span><div><h2 id="method-title">How this report counts progress</h2><p>“Lesson words” counts each distinct vocabulary entry linked to a lesson once, even if it appears in multiple lessons. The chart uses the date each word was added to the study site. Anki status is a separate snapshot taken when I last synced locally; neither measure establishes fluency.</p></div></aside>
+  </main>
+  <footer><div class="wrap"><span>A personal Mandarin learning journal</span><span>Static report · {{ report_date|date:"F Y" }}</span></div></footer>
+</body>
+</html>

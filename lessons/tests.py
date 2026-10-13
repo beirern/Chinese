@@ -1,6 +1,10 @@
 from unittest.mock import patch
 from datetime import UTC, date, datetime
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -196,3 +200,45 @@ class AnkiProgressTests(TestCase):
         response = self.client.get(reverse("progress"))
         self.assertIsNone(response.context["anki_status_chart"])
         self.assertContains(response, "No Anki progress has been synced yet")
+
+
+class PublicReportTests(TestCase):
+    def test_build_uses_local_sources_lessons_and_anki_snapshot(self):
+        source = Source.objects.create(
+            name="Book & More", kind=Source.Kind.BOOK, creator="An Author",
+            url="https://example.com/book",
+        )
+        lesson = Lesson.objects.create(source=source, title="Greetings", description="Say <hello>")
+        word = Word.objects.create(
+            traditional="你好", simplified="你好", pinyin="nǐ hǎo", english="hello"
+        )
+        lesson.vocabulary.add(word)
+        AnkiProgress.objects.create(
+            word=word, card_id=123, state=AnkiProgress.State.REVIEWING,
+            synced_at=timezone.now(),
+        )
+
+        with TemporaryDirectory() as directory:
+            output = Path(directory)
+            call_command("build_progress_report", output=output)
+            html = (output / "index.html").read_text()
+            self.assertTrue((output / "public_report.css").is_file())
+
+        self.assertIn("Book &amp; More", html)
+        self.assertIn('href="https://example.com/book"', html)
+        self.assertIn("Greetings", html)
+        self.assertIn("Say &lt;hello&gt;", html)
+        self.assertIn("1 <small>matched cards</small>", html)
+        self.assertIn("Reviewing <b>1</b>", html)
+        self.assertNotIn("/admin/", html)
+
+    @patch("lessons.management.commands.build_progress_report.sync_anki_progress")
+    def test_failed_anki_sync_does_not_replace_report(self, sync):
+        sync.side_effect = AnkiSyncError("Anki is closed")
+        with TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "index.html").write_text("previous report")
+            with self.assertRaisesMessage(CommandError, "Anki is closed"):
+                call_command("build_progress_report", output=output, sync_anki=True)
+            self.assertEqual((output / "index.html").read_text(), "previous report")
+            self.assertFalse((output / "public_report.css").exists())
