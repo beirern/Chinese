@@ -18,9 +18,9 @@ class LessonAdmin(admin.ModelAdmin):
 
 @admin.register(Source)
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ("name", "kind", "url")
+    list_display = ("name", "creator", "kind", "url")
     list_filter = ("kind",)
-    search_fields = ("name",)
+    search_fields = ("name", "creator")
 
 
 @admin.register(Sentence)

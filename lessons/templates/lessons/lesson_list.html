@@ -7,7 +7,7 @@
     {% for source in sources %}
       <section class="card">
         <h3>{{ source.name }}</h3>
-        <p class="muted">{{ source.get_kind_display }}{% if source.url %} · <a href="{{ source.url }}">Original material</a>{% endif %}</p>
+        <p class="muted">{{ source.get_kind_display }}{% if source.creator %} · {{ source.creator }}{% endif %}{% if source.url %} · <a href="{{ source.url }}">Original material</a>{% endif %}</p>
         {% for lesson in source.lessons.all %}
           <article>
             <h4>{{ lesson.title }}</h4>

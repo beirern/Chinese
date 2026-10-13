@@ -50,19 +50,21 @@ class AnkiProgress(models.Model):
 
 class Source(models.Model):
     class Kind(models.TextChoices):
+        BOOK = "book", "Book"
         TEXTBOOK = "textbook", "Textbook"
         VIDEO = "video", "Video"
         OTHER = "other", "Other"
 
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200, verbose_name="Title or name")
+    creator = models.CharField(max_length=200, blank=True, verbose_name="Author or creator")
     kind = models.CharField(max_length=20, choices=Kind.choices, default=Kind.OTHER)
     url = models.URLField(blank=True, help_text="Optional link to the book, video, or other original material.")
 
     class Meta:
-        ordering = ("name",)
+        ordering = ("name", "creator", "id")
 
     def __str__(self):
-        return self.name
+        return f"{self.name} — {self.creator}" if self.creator else self.name
 
 
 class Lesson(models.Model):

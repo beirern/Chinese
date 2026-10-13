@@ -30,7 +30,7 @@ class LessonForm(forms.ModelForm):
 class SourceForm(forms.ModelForm):
     class Meta:
         model = Source
-        fields = ("name", "kind", "url")
+        fields = ("kind", "name", "creator", "url")
 
 
 class LessonWordEntryForm(forms.Form):
@@ -38,6 +38,10 @@ class LessonWordEntryForm(forms.Form):
     simplified = forms.CharField(max_length=100, label="Simplified")
     pinyin = forms.CharField(max_length=200, help_text="Tone marks; separate syllables with spaces.")
     english = forms.CharField(max_length=255, label="English meaning")
+    confirm_new_reading = forms.BooleanField(
+        required=False,
+        label="This is a different reading; save it as a new word",
+    )
 
 
 LessonWordFormSet = formset_factory(LessonWordEntryForm, extra=1, can_delete=True)
@@ -301,6 +305,21 @@ def lesson_create(request):
                 elif existing and (existing.simplified, existing.english) != word_values:
                     form.add_error(None, "A word with this traditional form and pinyin already exists with different simplified or English data. Update that word first, or correct this row.")
                     valid = False
+                elif not existing:
+                    other_readings = list(
+                        Word.objects.filter(traditional=key[0], simplified=data["simplified"])
+                        .exclude(pinyin=key[1])
+                        .values_list("pinyin", "english")
+                    )
+                    if other_readings:
+                        form.show_new_reading_confirmation = True
+                        if not data["confirm_new_reading"]:
+                            readings = "; ".join(f"{pinyin} ({english})" for pinyin, english in other_readings)
+                            form.add_error(
+                                "confirm_new_reading",
+                                f"These characters already have a saved reading: {readings}. Check the pinyin, or confirm this is a different reading.",
+                            )
+                            valid = False
                 seen_words[key] = word_values
 
             # The same word cannot be linked twice to one lesson.

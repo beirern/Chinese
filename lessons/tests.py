@@ -9,6 +9,76 @@ from .anki_sync import AnkiSyncError, sync_anki_progress
 from .models import AnkiProgress, Lesson, Source, Word
 
 
+class SourceTests(TestCase):
+    def test_books_with_same_title_can_be_distinguished_by_author(self):
+        first = Source.objects.create(name="Shared title", kind=Source.Kind.BOOK, creator="First author")
+        second = Source.objects.create(name="Shared title", kind=Source.Kind.BOOK, creator="Second author")
+
+        response = self.client.get(reverse("lesson-list"))
+        self.assertContains(response, "First author")
+        self.assertContains(response, "Second author")
+        self.assertEqual(str(first), "Shared title — First author")
+        self.assertEqual(str(second), "Shared title — Second author")
+
+    def test_source_form_accepts_book_and_creator(self):
+        response = self.client.post(reverse("source-create"), {
+            "kind": Source.Kind.BOOK,
+            "name": "Book title",
+            "creator": "Book author",
+            "url": "",
+        })
+
+        self.assertRedirects(response, reverse("lesson-create"))
+        self.assertTrue(Source.objects.filter(name="Book title", kind="book", creator="Book author").exists())
+
+
+class LessonWordReadingTests(TestCase):
+    def setUp(self):
+        self.source = Source.objects.create(name="Textbook")
+        self.word = Word.objects.create(
+            traditional="行", simplified="行", pinyin="xíng", english="to walk"
+        )
+
+    def lesson_data(self, pinyin, confirm=False):
+        return {
+            "source": self.source.pk,
+            "title": "New lesson",
+            "description": "Reading practice",
+            "words-TOTAL_FORMS": "1",
+            "words-INITIAL_FORMS": "0",
+            "words-MIN_NUM_FORMS": "0",
+            "words-MAX_NUM_FORMS": "1000",
+            "words-0-traditional": "行",
+            "words-0-simplified": "行",
+            "words-0-pinyin": pinyin,
+            "words-0-english": "to walk",
+            "words-0-confirm_new_reading": "on" if confirm else "",
+        }
+
+    def test_different_pinyin_shows_existing_reading_without_saving(self):
+        response = self.client.post(reverse("lesson-create"), self.lesson_data("xing"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "xíng (to walk)")
+        self.assertContains(response, "This is a different reading")
+        self.assertFalse(Lesson.objects.exists())
+        self.assertEqual(Word.objects.count(), 1)
+
+    def test_corrected_pinyin_reuses_word(self):
+        response = self.client.post(reverse("lesson-create"), self.lesson_data("xíng"))
+
+        self.assertRedirects(response, reverse("lesson-list"))
+        self.assertEqual(Word.objects.count(), 1)
+        self.assertEqual(list(Lesson.objects.get().vocabulary.all()), [self.word])
+
+    def test_confirmed_different_reading_creates_another_word(self):
+        response = self.client.post(reverse("lesson-create"), self.lesson_data("háng", confirm=True))
+
+        self.assertRedirects(response, reverse("lesson-list"))
+        self.assertEqual(Word.objects.count(), 2)
+        self.assertEqual(list(Lesson.objects.get().vocabulary.values_list("pinyin", flat=True)), ["háng"])
+
+
 class AnkiProgressTests(TestCase):
     def setUp(self):
         self.word = Word.objects.create(
@@ -19,6 +89,8 @@ class AnkiProgressTests(TestCase):
         lesson.vocabulary.add(self.word)
 
     def anki_response(self, action, **params):
+        if action == "deckNames":
+            return ["Default", "My Mandarin Lessons", "SpoonfedChinese Traditional"]
         if action == "findNotes":
             return [10]
         if action == "notesInfo":
@@ -43,6 +115,14 @@ class AnkiProgressTests(TestCase):
     def test_sync_counts_answers_and_displays_status(self, request):
         request.side_effect = self.anki_response
         self.assertEqual(sync_anki_progress(), {"matched": 1, "unmatched": 0, "ambiguous": 0})
+        request.assert_any_call("deckNames")
+        request.assert_any_call(
+            "findNotes", query='deck:"My Mandarin Lessons" -deck:"My Mandarin Lessons::*"'
+        )
+        self.assertEqual(
+            [call.kwargs["query"] for call in request.call_args_list if call.args[0] == "findNotes"],
+            ['deck:"My Mandarin Lessons" -deck:"My Mandarin Lessons::*"'],
+        )
         progress = AnkiProgress.objects.get(word=self.word)
         self.assertEqual(progress.state, AnkiProgress.State.REVIEWING)
         self.assertEqual(progress.answer_count, 3)
@@ -61,6 +141,20 @@ class AnkiProgressTests(TestCase):
         request.side_effect = AnkiSyncError("Anki is closed")
         response = self.client.post(reverse("word-sync-anki"), follow=True)
         self.assertContains(response, "Anki is closed")
+        self.assertEqual(AnkiProgress.objects.get(word=self.word).answer_count, 3)
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_missing_deck_keeps_existing_snapshot(self, request):
+        request.side_effect = self.anki_response
+        sync_anki_progress()
+        request.reset_mock()
+        request.return_value = ["Default", "SpoonfedChinese Traditional"]
+        request.side_effect = None
+
+        response = self.client.post(reverse("word-sync-anki"), follow=True)
+
+        self.assertContains(response, 'Anki deck &quot;My Mandarin Lessons&quot; was not found')
+        request.assert_called_once_with("deckNames")
         self.assertEqual(AnkiProgress.objects.get(word=self.word).answer_count, 3)
 
     def test_refresh_requires_post(self):

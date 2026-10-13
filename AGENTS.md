@@ -1,5 +1,9 @@
 # Chinese Study Site
 
+## Language preference
+
+Always respond to the user in English. The user writes Chinese in traditional characters; when they do, include a brief comment on grammar and style. If suggesting a more natural or accurate Chinese phrasing, write it in traditional characters. If their Chinese already reads well, say so briefly.
+
 ## Purpose and current scope
 
 This is a personal, context-first Chinese study site focused on Taiwanese usage and traditional characters. Vocabulary is collected from lessons and source material rather than as a disconnected word list. Lesson creation currently happens through a manually completed web form. Photo OCR, YouTube lesson creation, and practice modes such as flashcards, quizzes, dialogue, listening, and speaking are future ideas; they are not implemented yet.

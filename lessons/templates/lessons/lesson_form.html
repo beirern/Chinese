@@ -3,7 +3,7 @@
 {% block content %}
 <section class="card">
   <h2>Add a lesson</h2>
-  <p class="muted">Choose the material this lesson comes from, then add its words. Existing matching words are reused when their simplified form and English meaning agree.</p>
+  <p class="muted">Choose the material this lesson comes from, then add its words. Existing matching words are reused when their simplified form and English meaning agree. If the same characters have a different saved reading, you will be asked to check it.</p>
   <form method="post">
     {% csrf_token %}
     <fieldset><legend>Lesson source and context</legend>
@@ -20,7 +20,8 @@
         {% for form in entry_formset %}
           <div class="entry-row">
             {{ form.non_field_errors }}{{ form.DELETE.as_hidden }}
-            {% for field in form.visible_fields %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}
+            {% for field in form.visible_fields %}{% if field.name != "confirm_new_reading" %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endif %}{% endfor %}
+            {% if form.show_new_reading_confirmation %}<div class="reading-confirmation"><label for="{{ form.confirm_new_reading.id_for_label }}">{{ form.confirm_new_reading }} {{ form.confirm_new_reading.label }}</label>{{ form.confirm_new_reading.errors }}</div>{% endif %}
             <button type="button" class="secondary remove-row">Remove row</button>
           </div>
         {% endfor %}
@@ -28,7 +29,7 @@
       <template id="empty-row-template">
         <div class="entry-row">
           {{ entry_formset.empty_form.non_field_errors }}{{ entry_formset.empty_form.DELETE.as_hidden }}
-          {% for field in entry_formset.empty_form.visible_fields %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}
+          {% for field in entry_formset.empty_form.visible_fields %}{% if field.name != "confirm_new_reading" %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endif %}{% endfor %}
           <button type="button" class="secondary remove-row">Remove row</button>
         </div>
       </template>

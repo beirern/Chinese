@@ -43,6 +43,8 @@
     input, textarea, select { box-sizing: border-box; width: 100%; padding: .55rem; border: 1px solid #b9bfbd; border-radius: 5px; font: inherit; }
     .entry-row { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: .65rem; padding: .8rem 0; border-bottom: 1px solid #eee; }
     .entry-row .wide { grid-column: span 2; }
+    .entry-row .reading-confirmation { grid-column: 1 / -1; }
+    .reading-confirmation input { width: auto; }
     button { border: 0; border-radius: 5px; padding: .6rem .9rem; background: #175b72; color: white; font: inherit; cursor: pointer; }
     button.secondary { background: #5b6468; }
     .errors, .messages { color: #8c2525; }

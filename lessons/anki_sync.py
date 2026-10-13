@@ -14,6 +14,7 @@ from .models import AnkiProgress, Word
 
 
 ANKI_CONNECT_URL = "http://127.0.0.1:8765"
+ANKI_DECK_NAME = "My Mandarin Lessons"
 
 
 class AnkiSyncError(Exception):
@@ -54,7 +55,11 @@ def sync_anki_progress():
     words = list(Word.objects.all())
     existing = {progress.word_id: progress for progress in AnkiProgress.objects.all()}
 
-    note_ids = anki_request("findNotes", query="")
+    if ANKI_DECK_NAME not in anki_request("deckNames"):
+        raise AnkiSyncError(f'Anki deck "{ANKI_DECK_NAME}" was not found. No progress was saved.')
+    note_ids = anki_request(
+        "findNotes", query=f'deck:"{ANKI_DECK_NAME}" -deck:"{ANKI_DECK_NAME}::*"'
+    )
     notes = [note for group in batches(note_ids) for note in anki_request("notesInfo", notes=group)]
     by_card_id = {}
     by_content = defaultdict(list)

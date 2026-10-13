@@ -21,7 +21,7 @@
         <select id="source" name="source">
           <option value="">Choose a source</option>
           {% for source in sources %}
-            <option value="{{ source.id }}" {% if selected_source == source.id|stringformat:"s" %}selected{% endif %}>{{ source.name }}</option>
+            <option value="{{ source.id }}" {% if selected_source == source.id|stringformat:"s" %}selected{% endif %}>{{ source }}</option>
           {% endfor %}
         </select>
       </div>
@@ -30,7 +30,7 @@
         {% for source in sources %}
           {% if source.lessons.all %}
             <fieldset>
-              <legend>{{ source.name }}</legend>
+              <legend>{{ source }}</legend>
               {% for lesson in source.lessons.all %}
                 <label><input type="checkbox" name="lesson" value="{{ lesson.id }}" {% if lesson.id|stringformat:"s" in selected_lessons %}checked{% endif %} style="width:auto"> {{ lesson.title }}</label>
               {% empty %}<span class="muted">No lessons</span>{% endfor %}
