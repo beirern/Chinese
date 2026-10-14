@@ -1,4 +1,36 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+
+
+def validate_journal_help(value):
+    if not isinstance(value, list) or any(item not in ("google_translate", "pleco") for item in value):
+        raise ValidationError("Select Google Translate, Pleco, or both.")
+
+
+class JournalEntry(models.Model):
+    class HelpUsed(models.TextChoices):
+        GOOGLE_TRANSLATE = "google_translate", "Google Translate"
+        PLECO = "pleco", "Pleco"
+
+    title = models.CharField(max_length=200, blank=True)
+    text = models.TextField(verbose_name="Chinese writing")
+    english_note = models.TextField(blank=True, verbose_name="What I was trying to say in English")
+    help_used = models.JSONField(default=list, blank=True, validators=[validate_journal_help])
+    written_on = models.DateField(default=timezone.localdate, verbose_name="Writing date")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("-written_on", "-created_at", "-id")
+        verbose_name_plural = "journal entries"
+
+    def __str__(self):
+        return f"{self.written_on}: {self.title or self.text[:60]}"
+
+    @property
+    def help_used_labels(self):
+        return [label for value, label in self.HelpUsed.choices if value in self.help_used]
 
 
 class Word(models.Model):

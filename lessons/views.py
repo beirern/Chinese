@@ -11,13 +11,33 @@ from django.db.models.functions import TruncDate
 from django.http import HttpResponse
 from django.db import transaction
 from django.forms import formset_factory
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .anki_sync import AnkiSyncError, sync_anki_progress
-from .models import AnkiProgress, Lesson, Source, Word
+from .models import AnkiProgress, JournalEntry, Lesson, Source, Word
+from .forms import JournalEntryForm
+
+
+def journal_list(request):
+    return render(request, "lessons/journal_list.html", {"entries": JournalEntry.objects.all()})
+
+
+def journal_detail(request, pk):
+    entry = get_object_or_404(JournalEntry, pk=pk)
+    return render(request, "lessons/journal_detail.html", {"entry": entry})
+
+
+def journal_save(request, pk=None):
+    entry = get_object_or_404(JournalEntry, pk=pk) if pk is not None else None
+    form = JournalEntryForm(request.POST if request.method == "POST" else None, instance=entry)
+    if request.method == "POST" and form.is_valid():
+        entry = form.save()
+        messages.success(request, "Journal entry saved.")
+        return redirect("journal-detail", pk=entry.pk)
+    return render(request, "lessons/journal_form.html", {"form": form, "entry": entry})
 
 
 class LessonForm(forms.ModelForm):

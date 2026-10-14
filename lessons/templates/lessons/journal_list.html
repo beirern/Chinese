@@ -1,0 +1,19 @@
+{% extends "lessons/base.html" %}
+{% block title %}Journal · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Journal</h2>
+  <p class="muted">Revisit your Chinese writing over time.</p>
+  <a href="{% url 'journal-create' %}">New entry</a>
+</section>
+{% for entry in entries %}
+<article class="card">
+  <h3><a href="{% url 'journal-detail' entry.pk %}">{% if entry.title %}{{ entry.title }}{% else %}{{ entry.written_on|date:"F j, Y" }}{% endif %}</a></h3>
+  {% if entry.title %}<p class="muted">{{ entry.written_on|date:"F j, Y" }}</p>{% endif %}
+  <p class="journal-text" lang="zh-Hant">{{ entry.text|truncatechars:240 }}</p>
+  <a href="{% url 'journal-detail' entry.pk %}">Read entry</a>
+</article>
+{% empty %}
+<section class="card"><p>No journal entries yet. <a href="{% url 'journal-create' %}">Write your first entry</a>.</p></section>
+{% endfor %}
+{% endblock %}

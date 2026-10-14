@@ -10,7 +10,90 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .anki_sync import AnkiSyncError, sync_anki_progress
-from .models import AnkiProgress, Lesson, Source, Word
+from .models import AnkiProgress, JournalEntry, Lesson, Source, Word
+
+
+class JournalTests(TestCase):
+    def test_help_choices_and_clearing(self):
+        for choice in JournalEntry.HelpUsed:
+            response = self.client.post(reverse("journal-create"), {
+                "written_on": "2026-10-13", "text": "今天我寫日記。", "help_used": choice,
+            })
+            entry = JournalEntry.objects.latest("id")
+            self.assertRedirects(response, reverse("journal-detail", args=[entry.pk]))
+            self.assertEqual(entry.help_used, [choice])
+            self.assertContains(self.client.get(reverse("journal-detail", args=[entry.pk])), choice.label)
+        self.client.post(reverse("journal-edit", args=[entry.pk]), {
+            "written_on": "2026-10-13", "text": entry.text,
+        })
+        entry.refresh_from_db()
+        self.assertEqual(entry.help_used, [])
+        response = self.client.post(reverse("journal-create"), {
+            "written_on": "2026-10-13", "text": "日記", "help_used": "unknown",
+        })
+        self.assertIn("help_used", response.context["form"].errors)
+
+    def test_both_help_tools_are_saved_and_preselected_when_editing(self):
+        self.client.post(reverse("journal-create"), {
+            "written_on": "2026-10-13", "text": "日記", "help_used": ["google_translate", "pleco"],
+        })
+        entry = JournalEntry.objects.get()
+        self.assertEqual(entry.help_used, ["google_translate", "pleco"])
+        response = self.client.get(reverse("journal-edit", args=[entry.pk]))
+        self.assertEqual(response.context["form"].initial["help_used"], entry.help_used)
+        response = self.client.get(reverse("journal-detail", args=[entry.pk]))
+        self.assertContains(response, "Google Translate, Pleco")
+
+    def test_create_backdated_entry_and_edit_in_place(self):
+        response = self.client.post(reverse("journal-create"), {
+            "written_on": "2026-09-01",
+            "text": "今天我去公園。\n天氣很好。",
+            "english_note": "I went to the park today. The weather was nice.",
+        })
+        entry = JournalEntry.objects.get()
+        self.assertRedirects(response, reverse("journal-detail", args=[entry.pk]))
+        self.assertEqual(entry.written_on, date(2026, 9, 1))
+        created_at, updated_at = entry.created_at, entry.updated_at
+        response = self.client.get(reverse("journal-edit", args=[entry.pk]))
+        self.assertContains(response, 'value="2026-09-01"')
+        with patch("django.utils.timezone.now", return_value=datetime(2027, 1, 1, tzinfo=UTC)):
+            response = self.client.post(reverse("journal-edit", args=[entry.pk]), {
+                "written_on": "2026-09-02", "text": "今天我去了公園。", "english_note": "",
+            })
+        self.assertRedirects(response, reverse("journal-detail", args=[entry.pk]))
+        entry.refresh_from_db()
+        self.assertEqual(JournalEntry.objects.count(), 1)
+        self.assertEqual(entry.text, "今天我去了公園。")
+        self.assertEqual(entry.english_note, "")
+        self.assertEqual(entry.created_at, created_at)
+        self.assertNotEqual(entry.updated_at, updated_at)
+
+    def test_form_validation_preserves_input(self):
+        response = self.client.post(reverse("journal-create"), {
+            "written_on": "invalid", "text": "", "english_note": "My intended meaning",
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "My intended meaning")
+        self.assertTrue(response.context["form"].errors)
+        self.assertFalse(JournalEntry.objects.exists())
+
+    def test_list_orders_by_writing_date_and_detail_escapes_text(self):
+        newer = JournalEntry.objects.create(written_on=date(2026, 10, 1), text="新的日記")
+        older = JournalEntry.objects.create(
+            written_on=date(2026, 9, 1), text='<script>alert("test")</script>', english_note="An English note",
+        )
+        response = self.client.get(reverse("journal-list"))
+        self.assertEqual(list(response.context["entries"]), [newer, older])
+        response = self.client.get(reverse("journal-detail", args=[older.pk]))
+        self.assertContains(response, "An English note")
+        self.assertContains(response, "&lt;script&gt;")
+        self.assertNotContains(response, '<script>alert("test")</script>')
+        self.assertEqual(self.client.get(reverse("journal-edit", args=[999999])).status_code, 404)
+
+    def test_empty_list_and_default_date(self):
+        self.assertContains(self.client.get(reverse("journal-list")), "Write your first entry")
+        response = self.client.get(reverse("journal-create"))
+        self.assertContains(response, f'value="{timezone.localdate().isoformat()}"')
 
 
 class SourceTests(TestCase):

@@ -1,5 +1,15 @@
 from django.contrib import admin
-from .models import Lesson, Sentence, Source, Word
+from .models import JournalEntry, Lesson, Sentence, Source, Word
+from .forms import JournalEntryForm
+
+
+@admin.register(JournalEntry)
+class JournalEntryAdmin(admin.ModelAdmin):
+    form = JournalEntryForm
+    list_display = ("written_on", "title", "text", "help_used_labels", "created_at", "updated_at")
+    search_fields = ("title", "text", "english_note")
+    date_hierarchy = "written_on"
+    readonly_fields = ("created_at", "updated_at")
 
 
 @admin.register(Word)

@@ -1,0 +1,24 @@
+{% extends "lessons/base.html" %}
+{% block title %}{% if entry %}Edit{% else %}New{% endif %} journal entry · Chinese Lessons{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>{% if entry %}Edit{% else %}New{% endif %} journal entry</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+    <div>
+      {% if field.name == "help_used" %}
+      <fieldset class="journal-help"><legend>{{ field.label }}</legend>{{ field }}</fieldset>
+      {% else %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+      {% endif %}
+      {% if field.help_text %}<p class="muted">{{ field.help_text }}</p>{% endif %}
+      {{ field.errors }}
+    </div>
+    {% endfor %}
+    <p><button type="submit">Save entry</button>
+    {% if entry %}<a href="{% url 'journal-detail' entry.pk %}">Cancel</a>{% else %}<a href="{% url 'journal-list' %}">Cancel</a>{% endif %}</p>
+  </form>
+</section>
+{% endblock %}

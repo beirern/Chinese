@@ -1,0 +1,17 @@
+{% extends "lessons/base.html" %}
+{% block title %}Journal · {% if entry.title %}{{ entry.title }}{% else %}{{ entry.written_on|date:"F j, Y" }}{% endif %}{% endblock %}
+{% block content %}
+<p><a href="{% url 'journal-list' %}">Back to journal</a></p>
+<article class="card">
+  <h2>{% if entry.title %}{{ entry.title }}{% else %}{{ entry.written_on|date:"F j, Y" }}{% endif %}</h2>
+  {% if entry.title %}<p class="muted">{{ entry.written_on|date:"F j, Y" }}</p>{% endif %}
+  <div class="journal-text journal-writing" lang="zh-Hant">{{ entry.text }}</div>
+  {% if entry.english_note %}
+  <h3>What I was trying to say in English</h3>
+  <div class="journal-text">{{ entry.english_note }}</div>
+  {% endif %}
+  {% if entry.help_used %}<p>Help used: {{ entry.help_used_labels|join:", " }}</p>{% endif %}
+  <p class="muted">Created {{ entry.created_at|date:"F j, Y, g:i a T" }}<br>Last updated {{ entry.updated_at|date:"F j, Y, g:i a T" }}</p>
+  <a href="{% url 'journal-edit' entry.pk %}">Edit entry</a>
+</article>
+{% endblock %}
