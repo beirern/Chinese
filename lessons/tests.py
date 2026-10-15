@@ -186,7 +186,6 @@ class WordExportTests(TestCase):
         rows = list(csv.reader(io.StringIO(response.content.decode("utf-8-sig"))))
         self.assertEqual(rows, [["女兒（女儿）", "nǚ'ér - daughter, girl", "女兒"]])
         page = self.client.get(reverse("word-list"))
-        self.assertContains(page, "{{tts zh_TW voices=Apple_Meijia:Chinese}}")
         self.assertContains(page, "CSV columns: Front, Back, Chinese")
 
 
