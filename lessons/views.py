@@ -56,7 +56,7 @@ class SourceForm(forms.ModelForm):
 class LessonWordEntryForm(forms.Form):
     traditional = forms.CharField(max_length=100, label="Traditional")
     simplified = forms.CharField(max_length=100, label="Simplified")
-    pinyin = forms.CharField(max_length=200, help_text="Tone marks; separate syllables with spaces.")
+    pinyin = forms.CharField(max_length=200, help_text="Tone marks; separate words with spaces, keeping syllables within a word together (for example, shénme shíhòu).")
     english = forms.CharField(max_length=255, label="English meaning")
     confirm_new_reading = forms.BooleanField(
         required=False,

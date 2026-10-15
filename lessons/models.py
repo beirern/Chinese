@@ -39,7 +39,7 @@ class Word(models.Model):
     simplified = models.CharField(max_length=100)
     pinyin = models.CharField(
         max_length=200,
-        help_text="Use tone marks (for example, nǐ hǎo) and separate syllables with spaces.",
+        help_text="Use tone marks and spaces between words, keeping syllables within a word together (for example, shénme shíhòu).",
     )
     english = models.CharField(max_length=255, verbose_name="English translation")
 
