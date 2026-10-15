@@ -307,7 +307,7 @@ def word_export(request):
         front = word.traditional
         if word.simplified != word.traditional:
             front += f"（{word.simplified}）"
-        writer.writerow((front, f"{word.pinyin} - {word.english}"))
+        writer.writerow((front, f"{word.pinyin} - {word.english}", word.traditional))
     response = HttpResponse("\ufeff" + output.getvalue(), content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="chinese-words-anki.csv"'
     return response

@@ -1,3 +1,5 @@
+import csv
+import io
 from unittest.mock import patch
 from datetime import UTC, date, datetime
 from pathlib import Path
@@ -164,6 +166,28 @@ class LessonWordReadingTests(TestCase):
         self.assertRedirects(response, reverse("lesson-list"))
         self.assertEqual(Word.objects.count(), 2)
         self.assertEqual(list(Lesson.objects.get().vocabulary.values_list("pinyin", flat=True)), ["háng"])
+
+
+class WordExportTests(TestCase):
+    def test_export_keeps_matching_fields_and_adds_clean_tts_text(self):
+        word = Word.objects.create(
+            traditional="女兒", simplified="女儿", pinyin="nǚ'ér", english="daughter, girl"
+        )
+        source = Source.objects.create(name="Textbook")
+        lesson = Lesson.objects.create(source=source, title="Family")
+        lesson.vocabulary.add(word)
+        # A reused word must still produce just one import row.
+        other = Lesson.objects.create(source=source, title="People")
+        other.vocabulary.add(word)
+
+        response = self.client.get(reverse("word-export"))
+
+        self.assertEqual(response.status_code, 200)
+        rows = list(csv.reader(io.StringIO(response.content.decode("utf-8-sig"))))
+        self.assertEqual(rows, [["女兒（女儿）", "nǚ'ér - daughter, girl", "女兒"]])
+        page = self.client.get(reverse("word-list"))
+        self.assertContains(page, "{{tts zh_TW voices=Apple_Meijia:Chinese}}")
+        self.assertContains(page, "CSV columns: Front, Back, Chinese")
 
 
 class AnkiProgressTests(TestCase):

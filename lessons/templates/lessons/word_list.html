@@ -42,7 +42,19 @@
       <button type="submit" formaction="{% url 'word-export' %}">Export for Anki (CSV)</button>
     </fieldset>
   </form>
-  <p class="muted">{{ words|length }} words · CSV has no header row and keeps pinyin tone marks.</p>
+  <p class="muted">{{ words|length }} words · CSV columns: Front, Back, Chinese. No header row; pinyin tone marks are preserved.</p>
+  <details>
+    <summary>Set up Meijia audio in Anki</summary>
+    <ol>
+      <li>In Anki’s Manage Note Types, clone the note type used by your lesson cards and name it “Mandarin Meijia”. Keep Front and Back, then add a field named <strong>Chinese</strong>.</li>
+      <li>For existing cards, select only your lesson deck’s notes in Browse and use Change Note Type to switch to Mandarin Meijia. Map Front to Front and Back to Back, and retain the existing card template mapping to preserve scheduling.</li>
+      <li>Export these words and import the CSV into your lesson deck using Mandarin Meijia. Map columns 1–3 to Front, Back, Chinese. Choose to update existing notes matched by the first field, rather than import duplicates. Check the import preview before continuing.</li>
+      <li>In Cards, add this below <code>{% templatetag openvariable %}Front{% templatetag closevariable %}</code> in the front template:</li>
+    </ol>
+    <pre><code>{% templatetag openvariable %}tts zh_TW voices=Apple_Meijia:Chinese{% templatetag closevariable %}</code></pre>
+    <p>Anki provides the play button. With the standard back template, it also appears after revealing the answer. If it is hidden, enable audio play buttons in Anki’s preferences. Autoplay follows your existing deck settings.</p>
+    <p>Meijia must be installed on the device where you review. If it does not play, temporarily add <code>{% templatetag openvariable %}tts-voices:{% templatetag closevariable %}</code> to the template to check the available voice names. Chinese contains only traditional characters, so the simplified form is not read a second time.</p>
+  </details>
   {% if words %}
     <ul class="word-list">
       {% for word in words %}
