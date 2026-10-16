@@ -28,6 +28,7 @@ urlpatterns = [
     path('journal/<int:pk>/edit/', lesson_views.journal_save, name='journal-edit'),
     path('lessons/', lesson_views.lesson_list, name='lesson-list'),
     path('words/', lesson_views.word_list, name='word-list'),
+    path('practice/', lesson_views.practice, name='practice'),
     path('words/sync-anki/', lesson_views.word_sync_anki, name='word-sync-anki'),
     path('words/export.csv', lesson_views.word_export, name='word-export'),
     path('sources/new/', lesson_views.source_create, name='source-create'),

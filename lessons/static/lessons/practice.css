@@ -1,0 +1,38 @@
+.card.practice-page { width: 100%; max-width: none; margin-inline: 0; }
+.practice-page [hidden] { display: none !important; }
+.practice-page h2 { margin-bottom: .3rem; }
+.practice-page button:focus-visible, .practice-page summary:focus-visible { outline: 3px solid #9a4e0a; outline-offset: 3px; }
+.practice-page button:disabled { opacity: .5; cursor: default; }
+.practice-page summary { cursor: pointer; padding-block: .5rem; }
+.practice-page input[type="checkbox"] { width: auto; }
+.practice-page #practice-filter { max-width: 650px; padding-bottom: 1rem; }
+.practice-page #practice-filter > div { margin-block: .8rem; }
+.practice-modes { display: flex; gap: .4rem; border-bottom: 1px solid #deded8; margin-top: 1.25rem; padding-bottom: .75rem; }
+.practice-modes button { background: transparent; color: #175b72; border: 1px solid #175b72; }
+.practice-modes button[aria-pressed="true"] { background: #175b72; color: white; }
+.practice-voice { display: grid; grid-template-columns: 1fr 110px; gap: .25rem .75rem; margin-block: 1rem; }
+.practice-voice label[for="practice-voice"] { grid-column: 1; grid-row: 1; }
+.practice-voice label[for="practice-speed"] { grid-column: 2; grid-row: 1; }
+.practice-voice #practice-voice { grid-column: 1; grid-row: 2; min-width: 0; }
+.practice-voice #practice-speed { grid-column: 2; grid-row: 2; }
+.practice-voice #voice-status { grid-column: 1 / -1; margin: .25rem 0; font-size: .9rem; }
+.practice-prompt { padding-block: 1rem; }
+.practice-prompt p { margin-top: 0; }
+#listening-prompt { text-align: center; padding-block: 2rem; }
+#practice-play { font-size: 1.25rem; padding: 1rem 1.75rem; }
+#writing-meaning { font-size: 1.7rem; margin: .4rem 0 .75rem; overflow-wrap: anywhere; }
+.practice-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-block: .75rem; }
+.practice-navigation { border-top: 1px solid #deded8; padding-top: 1rem; }
+.practice-answer { border-top: 1px solid #deded8; margin-top: 1.25rem; padding-top: 1rem; }
+#answer-chinese { font-family: "Kaiti TC", "BiauKai", "Noto Serif TC", serif; font-size: 2.8rem; font-weight: 400; margin: .25rem 0; overflow-wrap: anywhere; }
+#answer-pinyin { font-size: 1.2rem; }
+.practice-answer details { margin-block: .75rem; }
+.practice-answer #guide-form, .practice-answer #guide-speed { max-width: 320px; }
+#guide-target { width: 260px; height: 260px; max-width: 100%; border: 1px solid #b9bfbd; }
+#guide-characters button { font-size: 1.3rem; background: white; color: #175b72; border: 1px solid #b9bfbd; }
+#guide-characters button[aria-pressed="true"] { border: 2px solid #175b72; background: #eef5f7; }
+.practice-footnote { margin-top: 1.5rem; font-size: .9rem; }
+@media (max-width: 500px) {
+  .practice-actions button { flex-grow: 1; }
+  .practice-page { padding-inline: .85rem; }
+}

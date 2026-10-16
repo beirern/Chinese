@@ -1,0 +1,106 @@
+{% extends "lessons/base.html" %}
+{% load static %}
+{% block title %}Practice · Chinese Lessons{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'lessons/practice.css' %}">
+<script defer src="{% static 'lessons/vendor/hanzi-writer-3.7.3.min.js' %}"></script>
+<script defer src="{% static 'lessons/practice.js' %}"></script>
+{% endblock %}
+{% block content %}
+<section class="card practice-page" data-mode="{{ mode }}">
+  <h2>Practice at your own pace</h2>
+  <p class="muted">Listen, write, and explore your lesson words. Stop whenever you like.</p>
+  <details id="practice-selection">
+    <summary>Choose words · {{ practice_words|length }} available</summary>
+    <form method="get" id="practice-filter">
+      <input type="hidden" name="mode" value="{{ mode }}" id="filter-mode">
+      <label for="practice-scope">Practise from</label>
+      <select name="scope" id="practice-scope">
+        <option value="all" {% if scope == 'all' %}selected{% endif %}>All words</option>
+        <option value="source" {% if scope == 'source' %}selected{% endif %}>One source</option>
+        <option value="lessons" {% if scope == 'lessons' %}selected{% endif %}>Specific lessons</option>
+      </select>
+      <div id="practice-source-choice">
+        <label for="practice-source">Source</label>
+        <select name="source" id="practice-source">
+          <option value="">Choose a source</option>
+          {% for source in sources %}<option value="{{ source.pk }}" {% if selected_source == source.pk|stringformat:'s' %}selected{% endif %}>{{ source }}</option>{% endfor %}
+        </select>
+      </div>
+      <div id="practice-lesson-choices">
+        {% for source in sources %}
+          {% if source.lessons.all %}
+          <fieldset><legend>{{ source }}</legend>
+            {% for lesson in source.lessons.all %}
+            <label><input type="checkbox" name="lesson" value="{{ lesson.pk }}" {% if lesson.pk|stringformat:'s' in selected_lessons %}checked{% endif %}> {{ lesson.title }}</label>
+            {% endfor %}
+          </fieldset>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <button type="submit">Use these words</button>
+    </form>
+  </details>
+  {% if practice_words %}
+  <noscript><p>Enable JavaScript to use this practice session.</p></noscript>
+  <div id="practice-session" hidden>
+    <div class="practice-modes" role="group" aria-label="Practice mode">
+      <button type="button" data-mode="listening" aria-pressed="false">Listening</button>
+      <button type="button" data-mode="writing" aria-pressed="false">Writing</button>
+    </div>
+    <div class="practice-voice">
+      <label for="practice-voice">Listening voice</label>
+      <select id="practice-voice" aria-describedby="voice-status"></select>
+      <p id="voice-status" class="muted" role="status"></p>
+      <label for="practice-speed">Speed</label>
+      <select id="practice-speed"><option value="0.6">Slower</option><option value="1" selected>Normal</option></select>
+    </div>
+    <div id="listening-prompt" class="practice-prompt">
+      <p>Listen and think of the meaning.</p>
+      <button type="button" id="practice-play">Play / replay</button>
+    </div>
+    <div id="writing-prompt" class="practice-prompt" hidden>
+      <p class="muted">Write the Chinese for</p>
+      <h3 id="writing-meaning"></h3>
+      <p class="muted">Write on paper, then reveal the answer to check it.</p>
+      <div class="practice-actions">
+        <button type="button" class="secondary" id="pronunciation-hint">Hear a hint</button>
+        <button type="button" class="secondary" id="pinyin-hint">Show pinyin hint</button>
+      </div>
+      <p id="practice-hint" hidden></p>
+    </div>
+    <p id="speech-status" role="status"></p>
+    <div class="practice-actions practice-navigation">
+      <button type="button" id="practice-reveal">Reveal answer</button>
+      <button type="button" class="secondary" id="practice-next">Skip word</button>
+    </div>
+    <section id="practice-answer" class="practice-answer" hidden aria-label="Answer">
+      <h3 id="answer-chinese" lang="zh-Hant"></h3>
+      <p id="answer-pinyin"></p>
+      <p id="answer-english"></p>
+      <details><summary>Lesson context</summary><ul id="answer-lessons"></ul></details>
+      <details id="stroke-guide" open>
+        <summary>Stroke order</summary>
+        <p class="muted">This guide follows Hanzi Writer’s sequence, which may differ from Taiwan conventions.</p>
+        <label for="guide-form">Written form</label><select id="guide-form"></select>
+        <div id="guide-characters" class="practice-actions" role="group" aria-label="Choose a character"></div>
+        <p id="guide-status" role="status"></p>
+        <div id="guide-target" class="writing-grid" aria-label="Character stroke guide"></div>
+        <label for="guide-speed">Animation speed</label>
+        <select id="guide-speed"><option value="normal">Normal</option><option value="fast">Faster</option></select>
+        <p id="guide-step" aria-live="polite"></p>
+        <div class="practice-actions">
+          <button type="button" id="guide-play" disabled>Play strokes</button>
+          <button type="button" id="guide-previous" disabled>Previous stroke</button>
+          <button type="button" id="guide-next" disabled>Next stroke</button>
+        </div>
+      </details>
+    </section>
+    <p class="muted practice-footnote">Words are shuffled. Nothing is due, and practice results are not saved.</p>
+  </div>
+  {% else %}
+  <p>No words match this selection. Choose another source or lesson above.</p>
+  {% endif %}
+</section>
+{{ practice_words|json_script:"practice-words" }}
+{% endblock %}

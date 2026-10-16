@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Chinese Lessons{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
   <style>
     :root { font: 16px/1.5 system-ui, sans-serif; color: #20252b; background: #f5f4f0; }
     body { max-width: 1050px; margin: 0 auto; padding: 1.5rem; }
@@ -60,7 +61,7 @@
 </head>
 <body>
   <header><h1>Chinese Lessons</h1><div class="muted">Build vocabulary from lesson context.</div></header>
-  <nav><a href="{% url 'home' %}">Home</a><a href="{% url 'progress' %}">Progress</a><a href="{% url 'journal-list' %}">Journal</a><a href="{% url 'lesson-list' %}">Lessons</a><a href="{% url 'word-list' %}">Words</a><a href="{% url 'source-create' %}">Add a source</a><a href="{% url 'lesson-create' %}">Add a lesson</a><a href="{% url 'admin:index' %}">Admin</a></nav>
+  <nav><a href="{% url 'home' %}">Home</a><a href="{% url 'progress' %}">Progress</a><a href="{% url 'journal-list' %}">Journal</a><a href="{% url 'lesson-list' %}">Lessons</a><a href="{% url 'word-list' %}">Words</a><a href="{% url 'practice' %}">Practice</a><a href="{% url 'source-create' %}">Add a source</a><a href="{% url 'lesson-create' %}">Add a lesson</a><a href="{% url 'admin:index' %}">Admin</a></nav>
   {% if messages %}<div class="messages">{% for message in messages %}<p class="{{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
   <main>{% block content %}{% endblock %}</main>
 </body>

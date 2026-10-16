@@ -189,6 +189,56 @@ class WordExportTests(TestCase):
         self.assertContains(page, "CSV columns: Front, Back, Chinese")
 
 
+class PracticeTests(TestCase):
+    def setUp(self):
+        self.source = Source.objects.create(name="Textbook")
+        self.other_source = Source.objects.create(name="Stories")
+        self.lesson = Lesson.objects.create(source=self.source, title="Family")
+        self.other_lesson = Lesson.objects.create(source=self.other_source, title="New neighbor")
+        self.word = Word.objects.create(
+            traditional="姊姊/姐姐", simplified="姐姐", pinyin="jiějie", english="older sister"
+        )
+        self.other_word = Word.objects.create(
+            traditional="鄰居", simplified="邻居", pinyin="línjū", english="neighbor"
+        )
+        self.lesson.vocabulary.add(self.word)
+        self.other_lesson.vocabulary.add(self.word, self.other_word)
+        Word.objects.create(traditional="水", simplified="水", pinyin="shuǐ", english="water")
+
+    def test_uses_lesson_vocabulary_once_and_retains_readings_and_context(self):
+        response = self.client.get(reverse("practice"))
+        rows = response.context["practice_words"]
+        self.assertEqual({row["id"] for row in rows}, {self.word.id, self.other_word.id})
+        row = next(row for row in rows if row["id"] == self.word.id)
+        self.assertEqual(row["traditional"], "姊姊/姐姐")
+        self.assertEqual(row["pinyin"], "jiějie")
+        self.assertEqual(set(row["lessons"]), {"Textbook · Family", "Stories · New neighbor"})
+        self.assertFalse(AnkiProgress.objects.exists())
+
+    def test_filters_sources_and_lessons_without_writing_data(self):
+        before = (Word.objects.count(), Lesson.objects.count())
+        for params, expected in [
+            ({"scope": "source", "source": self.source.id}, {self.word.id}),
+            ({"scope": "lessons", "lesson": [self.other_lesson.id]}, {self.word.id, self.other_word.id}),
+            ({"scope": "source", "source": "invalid"}, set()),
+            ({"scope": "lessons", "lesson": ["invalid"]}, set()),
+        ]:
+            with self.subTest(params=params):
+                response = self.client.get(reverse("practice"), params)
+                self.assertEqual({row["id"] for row in response.context["practice_words"]}, expected)
+        self.assertEqual((Word.objects.count(), Lesson.objects.count()), before)
+        self.assertFalse(AnkiProgress.objects.exists())
+
+    def test_json_payload_escapes_script_content_and_mode_is_validated(self):
+        self.word.english = '</script><script>alert("test")</script>'
+        self.word.save()
+        response = self.client.get(reverse("practice"), {"mode": "writing"})
+        self.assertEqual(response.context["mode"], "writing")
+        self.assertNotContains(response, '<script>alert("test")</script>')
+        self.assertContains(response, r"\u003C/script\u003E")
+        self.assertEqual(self.client.get(reverse("practice"), {"mode": "unknown"}).context["mode"], "listening")
+
+
 class AnkiProgressTests(TestCase):
     def setUp(self):
         self.word = Word.objects.create(

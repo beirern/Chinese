@@ -262,6 +262,30 @@ def word_list(request):
     })
 
 
+def practice(request):
+    scope = request.GET.get("scope", "all")
+    source_id = request.GET.get("source", "")
+    lesson_ids = request.GET.getlist("lesson")
+    words = words_for_filter(scope, source_id, lesson_ids).prefetch_related("lessons__source")
+    return render(request, "lessons/practice.html", {
+        "practice_words": [
+            {
+                "id": word.pk,
+                "traditional": word.traditional,
+                "pinyin": word.pinyin,
+                "english": word.english,
+                "lessons": [f"{lesson.source} · {lesson.title}" for lesson in word.lessons.all()],
+            }
+            for word in words
+        ],
+        "sources": Source.objects.prefetch_related("lessons"),
+        "scope": scope,
+        "selected_source": source_id,
+        "selected_lessons": lesson_ids,
+        "mode": "writing" if request.GET.get("mode") == "writing" else "listening",
+    })
+
+
 @require_POST
 def word_sync_anki(request):
     try:

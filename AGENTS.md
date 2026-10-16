@@ -6,13 +6,14 @@ Always respond to the user in English. The user writes Chinese in traditional ch
 
 ## Purpose and current scope
 
-This is a personal, context-first Chinese study site focused on Taiwanese usage and traditional characters. Vocabulary is collected from lessons and source material rather than as a disconnected word list. Lesson creation currently happens through a manually completed web form. Photo OCR, YouTube lesson creation, and practice modes such as flashcards, quizzes, dialogue, listening, and speaking are future ideas; they are not implemented yet.
+This is a personal, context-first Chinese study site focused on Taiwanese usage and traditional characters. Vocabulary is collected from lessons and source material rather than as a disconnected word list. Lesson creation currently happens through a manually completed web form. `/practice/` provides optional listening with browser TTS and paper-based writing prompts with Hanzi Writer stroke playback; it saves no practice progress. Photo OCR, YouTube lesson creation, flashcards, dialogue, and speaking are future ideas.
 
 ## Current structure
 
 - `chinese_site/` contains Django settings and the root URL configuration.
 - `lessons/` contains the study models, lesson entry/list views, admin registrations, templates, and migrations.
 - `/` lists lessons. `/lessons/new/` creates one lesson and its textbook vocabulary rows. `/admin/` is Django admin.
+- `/practice/` uses existing vocabulary filters. Hanzi Writer 3.7.3 is vendored; stroke data loads on demand from `hanzi-writer-data@2.0.1` on jsDelivr. Playback follows the library's stroke conventions, which can differ from Taiwan's. Anki export and progress remain separate.
 - `db.sqlite3` is the configured local database. Preserve it and existing records when changing the schema.
 
 ## Data model and invariants
