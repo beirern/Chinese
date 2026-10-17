@@ -85,6 +85,7 @@ class Source(models.Model):
         BOOK = "book", "Book"
         TEXTBOOK = "textbook", "Textbook"
         VIDEO = "video", "Video"
+        SONG = "song", "Song"
         OTHER = "other", "Other"
 
     name = models.CharField(max_length=200, verbose_name="Title or name")

@@ -1,8 +1,8 @@
 {% extends "lessons/base.html" %}
-{% block title %}Add a lesson · Chinese Lessons{% endblock %}
+{% block title %}{% if lesson %}Edit lesson{% else %}Add a lesson{% endif %} · Chinese Lessons{% endblock %}
 {% block content %}
 <section class="card">
-  <h2>Add a lesson</h2>
+  <h2>{% if lesson %}Edit lesson{% else %}Add a lesson{% endif %}</h2>
   <p class="muted">Choose the material this lesson comes from, then add its words. Existing matching words are reused when their simplified form and English meaning agree. If the same characters have a different saved reading, you will be asked to check it.</p>
   <form method="post">
     {% csrf_token %}
@@ -13,6 +13,7 @@
     </fieldset>
     <fieldset>
       <legend>Words</legend>
+      {% if lesson %}<p class="muted">Changes to a word’s meaning or reading apply anywhere that word is used.</p>{% endif %}
       <p class="muted">For matching traditional and simplified forms, enter the same characters in both fields.</p>
       {{ entry_formset.management_form }}
       {% if entry_formset.non_form_errors %}<div class="errors">{{ entry_formset.non_form_errors }}</div>{% endif %}
@@ -35,7 +36,7 @@
       </template>
       <button type="button" class="secondary" id="add-row">Add another row</button>
     </fieldset>
-    <button type="submit">Save lesson</button>
+    <button type="submit">{% if lesson %}Save changes{% else %}Save lesson{% endif %}</button>
   </form>
 </section>
 <script>

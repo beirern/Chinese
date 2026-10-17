@@ -33,4 +33,5 @@ urlpatterns = [
     path('words/export.csv', lesson_views.word_export, name='word-export'),
     path('sources/new/', lesson_views.source_create, name='source-create'),
     path('lessons/new/', lesson_views.lesson_create, name='lesson-create'),
+    path('lessons/<int:pk>/edit/', lesson_views.lesson_edit, name='lesson-edit'),
 ]

@@ -412,6 +412,59 @@ def lesson_create(request):
     })
 
 
+def lesson_edit(request, pk):
+    lesson = get_object_or_404(Lesson.objects.prefetch_related("vocabulary"), pk=pk)
+    words = list(lesson.vocabulary.all())
+    initial = [
+        {"traditional": w.traditional, "simplified": w.simplified, "pinyin": w.pinyin, "english": w.english}
+        for w in words
+    ]
+    if request.method == "POST":
+        lesson_form = LessonForm(request.POST, instance=lesson)
+        entry_formset = LessonWordFormSet(request.POST, prefix="words")
+        valid = lesson_form.is_valid() and entry_formset.is_valid()
+        entries = [f for f in entry_formset if f.cleaned_data and not f.cleaned_data.get("DELETE")] if valid else []
+        seen = set()
+        for form in entries:
+            data = form.cleaned_data
+            key = (data["traditional"], data["pinyin"])
+            if key in seen:
+                form.add_error(None, "This word appears more than once in the lesson. Keep only one row for it.")
+                valid = False
+            seen.add(key)
+            conflict = Word.objects.filter(traditional=key[0], pinyin=key[1]).first()
+            if conflict and conflict not in words and (conflict.simplified, conflict.english) != (data["simplified"], data["english"]):
+                form.add_error(None, "A matching word already exists with different simplified or English data. Correct this row or edit that word in its lesson.")
+                valid = False
+            if not conflict:
+                other_readings = list(Word.objects.filter(traditional=key[0], simplified=data["simplified"]).exclude(pinyin=key[1]).values_list("pinyin", "english"))
+                if other_readings and not data["confirm_new_reading"]:
+                    form.show_new_reading_confirmation = True
+                    form.add_error("confirm_new_reading", "These characters already have a saved reading: " + "; ".join(f"{p} ({e})" for p, e in other_readings) + ". Check the pinyin, or confirm this is a different reading.")
+                    valid = False
+        if valid:
+            with transaction.atomic():
+                lesson_form.save()
+                retained = []
+                for form in entries:
+                    data = form.cleaned_data
+                    word, created = Word.objects.get_or_create(
+                        traditional=data["traditional"], pinyin=data["pinyin"],
+                        defaults={"simplified": data["simplified"], "english": data["english"]},
+                    )
+                    if not created and word in words:
+                        word.simplified, word.english = data["simplified"], data["english"]
+                        word.save(update_fields=("simplified", "english"))
+                    retained.append(word)
+                lesson.vocabulary.set(retained)
+            messages.success(request, f'Updated “{lesson.title}” with {len(retained)} vocabulary entries.')
+            return redirect("lesson-list")
+    else:
+        lesson_form = LessonForm(instance=lesson)
+        entry_formset = LessonWordFormSet(initial=initial, prefix="words")
+    return render(request, "lessons/lesson_form.html", {"lesson": lesson, "lesson_form": lesson_form, "entry_formset": entry_formset})
+
+
 def source_create(request):
     if request.method == "POST":
         source_form = SourceForm(request.POST)

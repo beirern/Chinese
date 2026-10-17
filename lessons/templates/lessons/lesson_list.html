@@ -2,7 +2,10 @@
 {% block title %}Lessons · Chinese Lessons{% endblock %}
 {% block content %}
 <section class="card">
-  <h2>Lessons</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap"><h2>Lessons</h2>
+    <div><a href="{% url 'source-create' %}"><button type="button" class="secondary">Add a source</button></a>
+    <a href="{% url 'lesson-create' %}"><button type="button">Add a lesson</button></a></div>
+  </div>
   {% if sources %}
     {% for source in sources %}
       <section class="card">
@@ -12,6 +15,7 @@
           <article>
             <h4>{{ lesson.title }}</h4>
             <p>{{ lesson.description }}</p>
+            <p><a href="{% url 'lesson-edit' lesson.pk %}">Edit lesson</a></p>
             {% if lesson.vocabulary.all %}
               <h5>Words</h5>
               <ul>
@@ -29,7 +33,5 @@
   {% else %}
     <p class="muted">No sources yet. Add your textbook, then create its first lesson.</p>
   {% endif %}
-  <a href="{% url 'source-create' %}"><button type="button" class="secondary">Add a source</button></a>
-  <a href="{% url 'lesson-create' %}"><button type="button">Add a lesson</button></a>
 </section>
 {% endblock %}
