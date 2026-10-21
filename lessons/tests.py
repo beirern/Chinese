@@ -169,7 +169,7 @@ class LessonWordReadingTests(TestCase):
 
 
 class WordExportTests(TestCase):
-    def test_export_keeps_matching_fields_and_adds_clean_tts_text(self):
+    def test_export_shows_only_traditional_on_front_and_keeps_clean_tts_text(self):
         word = Word.objects.create(
             traditional="女兒", simplified="女儿", pinyin="nǚ'ér", english="daughter, girl"
         )
@@ -184,7 +184,7 @@ class WordExportTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         rows = list(csv.reader(io.StringIO(response.content.decode("utf-8-sig"))))
-        self.assertEqual(rows, [["女兒（女儿）", "nǚ'ér - daughter, girl", "女兒"]])
+        self.assertEqual(rows, [["女兒", "nǚ'ér - daughter, girl<br>Simplified: 女儿", "女兒"]])
         page = self.client.get(reverse("word-list"))
         self.assertContains(page, "CSV columns: Front, Back, Chinese")
 
@@ -270,6 +270,34 @@ class AnkiProgressTests(TestCase):
                 {"id": 1_700_000_200_000, "ease": 4},
             ]}
         self.fail(f"Unexpected Anki action: {action}")
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_sync_matches_new_layout_without_existing_snapshot(self, request):
+        def response(action, **params):
+            result = self.anki_response(action, **params)
+            if action == "notesInfo":
+                result[0]["fields"]["Front"]["value"] = "女兒"
+                result[0]["fields"]["Back"]["value"] = "nü&#x27;ér - daughter<br>Simplified: 女儿"
+            return result
+
+        request.side_effect = response
+        self.assertEqual(sync_anki_progress(), {"matched": 1, "unmatched": 0, "ambiguous": 0})
+        self.assertEqual(AnkiProgress.objects.get(word=self.word).card_id, 20)
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_sync_rejects_ambiguous_old_and_new_layouts(self, request):
+        def response(action, **params):
+            result = self.anki_response(action, **params)
+            if action == "notesInfo":
+                result.append({"cards": [21], "fields": {
+                    "Front": {"value": "女兒"},
+                    "Back": {"value": "nü'ér - daughter<br>Simplified: 女儿"},
+                }})
+            return result
+
+        request.side_effect = response
+        self.assertEqual(sync_anki_progress(), {"matched": 0, "unmatched": 1, "ambiguous": 1})
+        self.assertFalse(AnkiProgress.objects.exists())
 
     @patch("lessons.anki_sync.anki_request")
     def test_sync_counts_answers_and_displays_status(self, request):

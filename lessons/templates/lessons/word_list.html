@@ -42,7 +42,7 @@
       <button type="submit" formaction="{% url 'word-export' %}">Export for Anki (CSV)</button>
     </fieldset>
   </form>
-  <p class="muted">{{ words|length }} words · CSV columns: Front, Back, Chinese. No header row; pinyin tone marks are preserved.</p>
+  <p class="muted">{{ words|length }} words · CSV columns: Front, Back, Chinese. Front: Traditional Chinese only. Back: pinyin, English, and Simplified Chinese. No header row; pinyin tone marks are preserved. Enable HTML when importing into Anki.</p>
   {% if words %}
     <ul class="word-list">
       {% for word in words %}

@@ -11,6 +11,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from .models import AnkiProgress, Word
+from .anki_fields import word_anki_fields
 
 
 ANKI_CONNECT_URL = "http://127.0.0.1:8765"
@@ -84,7 +85,10 @@ def sync_anki_progress():
             front = word.traditional
             if word.simplified != word.traditional:
                 front += f"（{word.simplified}）"
-            candidates = by_content[(front, f"{word.pinyin} - {word.english}")]
+            # Support both updated cards and older imports without a snapshot.
+            new_front, new_back, _ = word_anki_fields(word)
+            keys = {(new_front, new_back), (front, f"{word.pinyin} - {word.english}")}
+            candidates = [note for key in keys for note in by_content[key]]
             if len(candidates) > 1:
                 ambiguous += 1
             if len(candidates) != 1:

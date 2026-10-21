@@ -17,6 +17,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .anki_sync import AnkiSyncError, sync_anki_progress
+from .anki_fields import word_anki_fields
 from .models import AnkiProgress, JournalEntry, Lesson, Source, Word
 from .forms import JournalEntryForm
 
@@ -328,10 +329,7 @@ def word_export(request):
     output = io.StringIO(newline="")
     writer = csv.writer(output)
     for word in words_for_filter(scope, source_id, lesson_ids):
-        front = word.traditional
-        if word.simplified != word.traditional:
-            front += f"（{word.simplified}）"
-        writer.writerow((front, f"{word.pinyin} - {word.english}", word.traditional))
+        writer.writerow(word_anki_fields(word))
     response = HttpResponse("\ufeff" + output.getvalue(), content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="chinese-words-anki.csv"'
     return response
