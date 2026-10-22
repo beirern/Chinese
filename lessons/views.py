@@ -199,9 +199,7 @@ def progress_chart(history):
         magnitude = 10 ** max(0, math.floor(math.log10(max(total / 4, 0.25))))
         return math.ceil(total / 4 / magnitude) * magnitude or 1
 
-    lesson_step = tick_step(history[-1]["lesson_total"])
     word_step = tick_step(history[-1]["word_total"])
-    lesson_max = lesson_step * 4
     word_max = word_step * 4
 
     def x_for(day):
@@ -235,12 +233,10 @@ def progress_chart(history):
         "start_day": first_day,
         "end_day": last_day,
         "single_day": days == 0,
-        "lessons": series("lesson_total", lesson_max),
         "words": series("word_total", word_max),
         "ticks": [
             {
                 "y": round(plot_bottom - i * (plot_bottom - plot_top) / 4, 1),
-                "lessons": i * lesson_step,
                 "words": i * word_step,
             }
             for i in range(5)
