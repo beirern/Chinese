@@ -67,15 +67,14 @@ def sync_anki_progress():
     for note in notes:
         cards = note.get("cards", [])
         fields = note.get("fields", {})
-        if len(cards) != 1 or "Front" not in fields or "Back" not in fields:
+        if not cards or "Front" not in fields or "Back" not in fields:
             continue
-        card_id = cards[0]
-        by_card_id[card_id] = note
+        for card_id in cards:
+            by_card_id[card_id] = note
         key = (html.unescape(fields["Front"]["value"]), html.unescape(fields["Back"]["value"]))
         by_content[key].append(note)
 
-    matched = {}
-    used_cards = set()
+    matched_notes = {}
     ambiguous = 0
     for word in words:
         old = existing.get(word.id)
@@ -86,7 +85,7 @@ def sync_anki_progress():
             if word.simplified != word.traditional:
                 front += f"（{word.simplified}）"
             # Support both updated cards and older imports without a snapshot.
-            new_front, new_back, _ = word_anki_fields(word)
+            new_front, new_back = word_anki_fields(word)[:2]
             keys = {(new_front, new_back), (front, f"{word.pinyin} - {word.english}")}
             candidates = [note for key in keys for note in by_content[key]]
             if len(candidates) > 1:
@@ -94,21 +93,42 @@ def sync_anki_progress():
             if len(candidates) != 1:
                 continue
             note = candidates[0]
-        card_id = note["cards"][0]
+        matched_notes[word.id] = note
+
+    card_ids = list(dict.fromkeys(
+        card_id for note in matched_notes.values() for card_id in note["cards"]
+    ))
+    cards = {}
+    for group in batches(card_ids):
+        cards.update({card["cardId"]: card for card in anki_request("cardsInfo", cards=group)})
+    if set(cards) != set(card_ids):
+        raise AnkiSyncError("Anki did not return every matched card. No progress was saved.")
+
+    matched = {}
+    used_cards = set()
+    for word_id, note in matched_notes.items():
+        note_cards = note["cards"]
+        old = existing.get(word_id)
+        if old and old.card_id in note_cards:
+            # Keep tracking the same card even if templates have been reordered.
+            card_id = old.card_id
+        elif len(note_cards) == 1:
+            card_id = note_cards[0]
+        else:
+            # New reverse templates are appended; ord 0 is the original direction.
+            forward = [card_id for card_id in note_cards if cards[card_id].get("ord") == 0]
+            if len(forward) != 1:
+                raise AnkiSyncError("Could not identify the original Anki card. No progress was saved.")
+            card_id = forward[0]
         if card_id in used_cards:
             ambiguous += 1
             continue
         used_cards.add(card_id)
-        matched[word.id] = card_id
+        matched[word_id] = card_id
 
-    card_ids = list(matched.values())
-    cards = {}
     reviews = {}
-    for group in batches(card_ids):
-        cards.update({card["cardId"]: card for card in anki_request("cardsInfo", cards=group)})
+    for group in batches(list(matched.values())):
         reviews.update(anki_request("getReviewsOfCards", cards=group))
-    if set(cards) != set(card_ids):
-        raise AnkiSyncError("Anki did not return every matched card. No progress was saved.")
 
     now = timezone.now()
     with transaction.atomic():

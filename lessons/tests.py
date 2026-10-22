@@ -184,9 +184,11 @@ class WordExportTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         rows = list(csv.reader(io.StringIO(response.content.decode("utf-8-sig"))))
-        self.assertEqual(rows, [["女兒", "nǚ'ér - daughter, girl<br>Simplified: 女儿", "女兒"]])
+        self.assertEqual(rows, [[
+            "女兒", "nǚ'ér - daughter, girl<br>Simplified: 女儿", "女兒", "daughter, girl", "女儿"
+        ]])
         page = self.client.get(reverse("word-list"))
-        self.assertContains(page, "CSV columns: Front, Back, Chinese")
+        self.assertContains(page, "CSV columns: Front, Back, Chinese, English, Simplified")
 
 
 class PracticeTests(TestCase):
@@ -283,6 +285,79 @@ class AnkiProgressTests(TestCase):
         request.side_effect = response
         self.assertEqual(sync_anki_progress(), {"matched": 1, "unmatched": 0, "ambiguous": 0})
         self.assertEqual(AnkiProgress.objects.get(word=self.word).card_id, 20)
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_sync_selects_original_template_when_reverse_card_is_listed_first(self, request):
+        def response(action, **params):
+            result = self.anki_response(action, **params)
+            if action == "notesInfo":
+                result[0]["cards"] = [21, 20]
+                result[0]["fields"].update({
+                    "English": {"value": "daughter"},
+                    "Simplified": {"value": "女儿"},
+                })
+            elif action == "cardsInfo":
+                result[0]["ord"] = 0
+                result.append({"cardId": 21, "ord": 1, "queue": 0, "type": 0, "interval": 0})
+            return result
+
+        request.side_effect = response
+        self.assertEqual(sync_anki_progress(), {"matched": 1, "unmatched": 0, "ambiguous": 0})
+        progress = AnkiProgress.objects.get(word=self.word)
+        self.assertEqual(progress.card_id, 20)
+        self.assertEqual(progress.answer_count, 3)
+        self.assertEqual(progress.state, AnkiProgress.State.REVIEWING)
+        request.assert_any_call("getReviewsOfCards", cards=[20])
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_sync_keeps_existing_card_after_reverse_template_is_added_and_reordered(self, request):
+        request.side_effect = self.anki_response
+        sync_anki_progress()
+
+        def response(action, **params):
+            result = self.anki_response(action, **params)
+            if action == "notesInfo":
+                result[0]["cards"] = [21, 20]
+            elif action == "cardsInfo":
+                result[0]["ord"] = 1
+                result.append({"cardId": 21, "ord": 0, "queue": 0, "type": 0, "interval": 0})
+            return result
+
+        request.side_effect = response
+        self.assertEqual(sync_anki_progress(), {"matched": 1, "unmatched": 0, "ambiguous": 0})
+        self.assertEqual(AnkiProgress.objects.get(word=self.word).card_id, 20)
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_incomplete_multi_card_response_keeps_existing_snapshot(self, request):
+        request.side_effect = self.anki_response
+        sync_anki_progress()
+
+        def response(action, **params):
+            result = self.anki_response(action, **params)
+            if action == "notesInfo":
+                result[0]["cards"] = [20, 21]
+            return result
+
+        request.side_effect = response
+        with self.assertRaisesMessage(AnkiSyncError, "Anki did not return every matched card"):
+            sync_anki_progress()
+        self.assertEqual(AnkiProgress.objects.get(word=self.word).answer_count, 3)
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_sync_does_not_guess_when_original_template_cannot_be_identified(self, request):
+        def response(action, **params):
+            result = self.anki_response(action, **params)
+            if action == "notesInfo":
+                result[0]["cards"] = [20, 21]
+            elif action == "cardsInfo":
+                result[0]["ord"] = 1
+                result.append({"cardId": 21, "ord": 2, "queue": 0, "type": 0, "interval": 0})
+            return result
+
+        request.side_effect = response
+        with self.assertRaisesMessage(AnkiSyncError, "Could not identify the original Anki card"):
+            sync_anki_progress()
+        self.assertFalse(AnkiProgress.objects.exists())
 
     @patch("lessons.anki_sync.anki_request")
     def test_sync_rejects_ambiguous_old_and_new_layouts(self, request):
