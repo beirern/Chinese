@@ -11,7 +11,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from .models import AnkiProgress, Word
-from .anki_fields import word_anki_fields
+from .anki_fields import with_anki_context, word_anki_fields
 
 
 ANKI_CONNECT_URL = "http://127.0.0.1:8765"
@@ -53,7 +53,7 @@ def card_state(card):
 
 def sync_anki_progress():
     """Replace local snapshots after all Anki reads succeed; never alter Anki."""
-    words = list(Word.objects.all())
+    words = list(with_anki_context(Word.objects.all()))
     existing = {progress.word_id: progress for progress in AnkiProgress.objects.all()}
 
     if ANKI_DECK_NAME not in anki_request("deckNames"):
@@ -86,7 +86,12 @@ def sync_anki_progress():
                 front += f"（{word.simplified}）"
             # Support both updated cards and older imports without a snapshot.
             new_front, new_back = word_anki_fields(word)[:2]
-            keys = {(new_front, new_back), (front, f"{word.pinyin} - {word.english}")}
+            plain_back = word_anki_fields(word, include_context=False)[1]
+            keys = {
+                (new_front, html.unescape(new_back)),
+                (new_front, html.unescape(plain_back)),
+                (front, f"{word.pinyin} - {word.english}"),
+            }
             candidates = [note for key in keys for note in by_content[key]]
             if len(candidates) > 1:
                 ambiguous += 1

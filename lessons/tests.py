@@ -12,7 +12,8 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .anki_sync import AnkiSyncError, sync_anki_progress
-from .models import AnkiProgress, JournalEntry, Lesson, Source, Word
+from .anki_fields import word_anki_fields
+from .models import AnkiProgress, JournalEntry, Lesson, Sentence, Source, Word
 
 
 class JournalTests(TestCase):
@@ -169,6 +170,50 @@ class LessonWordReadingTests(TestCase):
 
 
 class WordExportTests(TestCase):
+    def test_song_context_is_only_on_answer_and_keeps_each_linked_source(self):
+        word = Word.objects.create(
+            traditional="花", simplified="花", pinyin="huā", english="flower"
+        )
+        for title, kind, text in [
+            ("Song & One", Source.Kind.SONG, "我看見一朵花。"),
+            ("Song Two", Source.Kind.SONG, "花在這裡。"),
+            ("Textbook", Source.Kind.BOOK, "這是花。"),
+        ]:
+            source = Source.objects.create(name=title, kind=kind, creator="Singer <name>")
+            lesson = Lesson.objects.create(source=source, title=title)
+            lesson.vocabulary.add(word)
+            sentence = Sentence.objects.create(lesson=lesson, text=text)
+            sentence.words.add(word)
+            # Unlinked sentences must not leak into this word's answer.
+            Sentence.objects.create(lesson=lesson, text="Unlinked sentence")
+        sentence = Sentence.objects.create(lesson=lesson, text="<script>not a song</script>")
+        sentence.words.add(word)
+
+        rows = list(csv.reader(io.StringIO(
+            self.client.get(reverse("word-export")).content.decode("utf-8-sig")
+        )))
+        self.assertEqual(len(rows), 1)
+        front, back, chinese, english, simplified = rows[0]
+        self.assertEqual((front, chinese, english, simplified), ("花", "花", "flower", "花"))
+        self.assertIn("huā - flower<br>Simplified: 花", back)
+        self.assertIn("我看見一朵花。", back)
+        self.assertIn("花在這裡。", back)
+        self.assertIn("Song &amp; One — Singer &lt;name&gt;", back)
+        self.assertNotIn("這是花。", back)
+        self.assertNotIn("Unlinked", back)
+        self.assertNotIn("<script>", back)
+
+    def test_song_sentence_html_is_escaped_and_repeated_lines_are_deduplicated(self):
+        word = Word.objects.create(traditional="花", simplified="花", pinyin="huā", english="flower")
+        source = Source.objects.create(name="Song", kind=Source.Kind.SONG)
+        lesson = Lesson.objects.create(source=source, title="Song")
+        for _ in range(2):
+            sentence = Sentence.objects.create(lesson=lesson, text="花 < 花\n花 & 花")
+            sentence.words.add(word)
+        back = word_anki_fields(word)[1]
+        self.assertEqual(back.count('class="song-context"'), 1)
+        self.assertIn("花 &lt; 花<br>花 &amp; 花", back)
+
     def test_export_shows_only_traditional_on_front_and_keeps_clean_tts_text(self):
         word = Word.objects.create(
             traditional="女兒", simplified="女儿", pinyin="nǚ'ér", english="daughter, girl"
@@ -272,6 +317,28 @@ class AnkiProgressTests(TestCase):
                 {"id": 1_700_000_200_000, "ease": 4},
             ]}
         self.fail(f"Unexpected Anki action: {action}")
+
+    @patch("lessons.anki_sync.anki_request")
+    def test_song_matches_with_or_without_context_before_first_sync(self, request):
+        source = Source.objects.create(name="Song & More", kind=Source.Kind.SONG)
+        lesson = Lesson.objects.create(source=source, title="Song")
+        sentence = Sentence.objects.create(lesson=lesson, text="女兒在這裡。")
+        sentence.words.add(self.word)
+        for include_context in (False, True):
+            with self.subTest(include_context=include_context):
+                AnkiProgress.objects.all().delete()
+
+                def response(action, **params):
+                    result = self.anki_response(action, **params)
+                    if action == "notesInfo":
+                        front, back = word_anki_fields(self.word, include_context=include_context)[:2]
+                        result[0]["fields"]["Front"]["value"] = front
+                        result[0]["fields"]["Back"]["value"] = back
+                    return result
+
+                request.side_effect = response
+                self.assertEqual(sync_anki_progress(), {"matched": 1, "unmatched": 0, "ambiguous": 0})
+                self.assertEqual(AnkiProgress.objects.get(word=self.word).card_id, 20)
 
     @patch("lessons.anki_sync.anki_request")
     def test_sync_matches_new_layout_without_existing_snapshot(self, request):
