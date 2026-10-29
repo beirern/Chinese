@@ -168,6 +168,30 @@ class LessonWordReadingTests(TestCase):
         self.assertEqual(Word.objects.count(), 2)
         self.assertEqual(list(Lesson.objects.get().vocabulary.values_list("pinyin", flat=True)), ["háng"])
 
+    def test_saved_word_conflict_shows_both_values_on_create_and_edit(self):
+        lesson = Lesson.objects.create(source=self.source, title="Existing lesson")
+        data = self.lesson_data("xíng")
+        data.update({"words-0-simplified": "异", "words-0-english": "to go"})
+        for url in (reverse("lesson-create"), reverse("lesson-edit", args=[lesson.pk])):
+            response = self.client.post(url, data)
+            self.assertContains(response, "Simplified: saved “行”; entered “异”.")
+            self.assertContains(response, "English meaning: saved “to walk”; entered “to go”.")
+            self.assertEqual(response.context["entry_formset"][0]["english"].value(), "to go")
+        self.word.refresh_from_db()
+        self.assertEqual(self.word.english, "to walk")
+        self.assertFalse(lesson.vocabulary.exists())
+
+    def test_duplicate_rows_show_their_different_values(self):
+        data = self.lesson_data("xíng")
+        data.update({
+            "words-TOTAL_FORMS": "2",
+            "words-1-traditional": "行", "words-1-simplified": "行",
+            "words-1-pinyin": "xíng", "words-1-english": "to go",
+        })
+        response = self.client.post(reverse("lesson-create"), data)
+        self.assertContains(response, "English meaning: other row “to walk”; entered “to go”.")
+        self.assertFalse(Lesson.objects.exists())
+
 
 class WordExportTests(TestCase):
     def test_song_context_is_only_on_answer_and_keeps_each_linked_source(self):

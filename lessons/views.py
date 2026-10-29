@@ -68,6 +68,16 @@ class LessonWordEntryForm(forms.Form):
 LessonWordFormSet = formset_factory(LessonWordEntryForm, extra=1, can_delete=True)
 
 
+def word_conflict_message(existing_values, entered_values, existing_label):
+    differences = []
+    for label, existing, entered in zip(
+        ("Simplified", "English meaning"), existing_values, entered_values
+    ):
+        if existing != entered:
+            differences.append(f'{label}: {existing_label} “{existing}”; entered “{entered}”.')
+    return " ".join(differences)
+
+
 def lesson_list(request):
     sources = Source.objects.prefetch_related("lessons__vocabulary")
     return render(request, "lessons/lesson_list.html", {"sources": sources})
@@ -348,10 +358,10 @@ def lesson_create(request):
                 prior = seen_words.get(key)
                 existing = Word.objects.filter(traditional=key[0], pinyin=key[1]).first()
                 if prior is not None and prior != word_values:
-                    form.add_error(None, "This traditional form and pinyin were entered with conflicting simplified or English values in another row.")
+                    form.add_error(None, "This word also appears in another row with different values. " + word_conflict_message(prior, word_values, "other row"))
                     valid = False
                 elif existing and (existing.simplified, existing.english) != word_values:
-                    form.add_error(None, "A word with this traditional form and pinyin already exists with different simplified or English data. Update that word first, or correct this row.")
+                    form.add_error(None, "A matching word already exists with different values. " + word_conflict_message((existing.simplified, existing.english), word_values, "saved") + " Update that word first, or correct this row.")
                     valid = False
                 elif not existing:
                     other_readings = list(
@@ -428,7 +438,7 @@ def lesson_edit(request, pk):
             seen.add(key)
             conflict = Word.objects.filter(traditional=key[0], pinyin=key[1]).first()
             if conflict and conflict not in words and (conflict.simplified, conflict.english) != (data["simplified"], data["english"]):
-                form.add_error(None, "A matching word already exists with different simplified or English data. Correct this row or edit that word in its lesson.")
+                form.add_error(None, "A matching word already exists with different values. " + word_conflict_message((conflict.simplified, conflict.english), (data["simplified"], data["english"]), "saved") + " Correct this row or edit that word in its lesson.")
                 valid = False
             if not conflict:
                 other_readings = list(Word.objects.filter(traditional=key[0], simplified=data["simplified"]).exclude(pinyin=key[1]).values_list("pinyin", "english"))
